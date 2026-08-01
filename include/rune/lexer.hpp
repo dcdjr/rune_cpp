@@ -17,11 +17,16 @@ private:
     std::size_t column_;
 
     bool is_at_end() const;
+    char peek() const;
+
+    char advance();
+    char skip_whitespace();
 
 public:
     explicit Lexer(std::string_view source);
 
     Token next_token();
+
 };
 
 } // namespace rune

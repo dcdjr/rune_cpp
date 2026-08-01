@@ -1,6 +1,6 @@
 #include "rune/lexer.hpp"
 
-namespace rune 
+namespace rune
 {
 
 // Line and column start at human-readable 1. Absolute position starts at 0.
@@ -49,6 +49,84 @@ void Lexer::skip_whitespace() {
             advance();
         else
             break;
+    }
+}
+
+Token Lexer::next_token() {
+    skip_whitespace();
+
+    const std::size_t start_pos = pos_;
+    const std::size_t start_line = line_;
+    const std::size_t start_column = column_;
+
+    if (is_at_end()) {
+        return Token{
+            TokenKind::TOK_EOF,
+            std::string_view{},
+            start_line,
+            start_column
+        };
+    }
+
+    const char current = advance();
+
+    switch (current) {
+        case ';':
+            return Token{
+                TokenKind::TOK_SEMICOLON,
+                source_.substr(start_pos, pos_ - start_pos),
+                start_line,
+                start_column
+            };
+        case '+':
+            return Token{
+                TokenKind::TOK_PLUS,
+                source_.substr(start_pos, pos_ - start_pos),
+                start_line,
+                start_column
+            };
+        case '-':
+            return Token{
+                TokenKind::TOK_MINUS,
+                source_.substr(start_pos, pos_ - start_pos),
+                start_line,
+                start_column
+            };
+        case '*':
+            return Token{
+                TokenKind::TOK_STAR,
+                source_.substr(start_pos, pos_ - start_pos),
+                start_line,
+                start_column
+            };
+        case '/':
+            return Token{
+                TokenKind::TOK_SLASH,
+                source_.substr(start_pos, pos_ - start_pos),
+                start_line,
+                start_column
+            };
+        case '(':
+            return Token{
+                TokenKind::TOK_LPAREN,
+                source_.substr(start_pos, pos_ - start_pos),
+                start_line,
+                start_column
+            };
+        case ')':
+            return Token{
+                TokenKind::TOK_RPAREN,
+                source_.substr(start_pos, pos_ - start_pos),
+                start_line,
+                start_column
+            };
+        default:
+            return Token{
+                TokenKind::TOK_EOF,
+                std::string_view{},
+                start_line,
+                start_column
+            };
     }
 }
 

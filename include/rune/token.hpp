@@ -4,32 +4,35 @@
 #include <cstddef>
 #include <string_view>
 
-namespace rune {
-    enum class TokenKind {
-        TOK_PRINT,
+namespace rune
+{
 
-        TOK_INT,
+enum class TokenKind {
+    TOK_PRINT,
 
-        TOK_SEMICOLON,
+    TOK_INT,
 
-        TOK_PLUS,
-        TOK_MINUS,
-        TOK_STAR,
-        TOK_SLASH,
+    TOK_SEMICOLON,
 
-        TOK_LPAREN,
-        TOK_RPAREN,
+    TOK_PLUS,
+    TOK_MINUS,
+    TOK_STAR,
+    TOK_SLASH,
 
-        TOK_EOF
-    };
+    TOK_LPAREN,
+    TOK_RPAREN,
 
-    struct Token {
-        TokenKind kind;
-        std::string_view lexeme;
-        std::size_t line;
-        std::size_t column;
-    };
-}
+    TOK_EOF
+};
+
+struct Token {
+    TokenKind kind;
+    std::string_view lexeme;
+    std::size_t line;
+    std::size_t column;
+};
+
+} // rune namespace
 
 
 #endif

@@ -18,4 +18,20 @@ char Lexer::peek() const {
     return source_[pos_];
 }
 
+char Lexer::advance() {
+    if (is_at_end()) return '\0';
+
+    char current_char = source_[pos_];
+    pos_++;
+
+    if (current_char == '\n') {
+        line_++;
+        column_ = 1;
+    } else {
+        column_++;
+    }
+
+    return current_char;
+}
+
 } // namespace rune

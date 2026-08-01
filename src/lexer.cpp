@@ -122,8 +122,8 @@ Token Lexer::next_token() {
             };
         default:
             return Token{
-                TokenKind::TOK_EOF,
-                std::string_view{},
+                TokenKind::TOK_ERROR,
+                source_.substr(start_pos, pos_ - start_pos),
                 start_line,
                 start_column
             };

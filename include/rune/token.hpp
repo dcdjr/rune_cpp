@@ -22,6 +22,7 @@ enum class TokenKind {
     TOK_LPAREN,
     TOK_RPAREN,
 
+    TOK_ERROR,
     TOK_EOF
 };
 

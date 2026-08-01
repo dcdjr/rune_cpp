@@ -52,6 +52,32 @@ void Lexer::skip_whitespace() {
     }
 }
 
+Token Lexer::make_token(
+    TokenKind kind,
+    std::size_t start_pos,
+    std::size_t start_line,
+    std::size_t start_column
+) const {
+    return Token{
+        kind,
+        source_.substr(start_pos, pos_ - start_pos),
+        start_line,
+        start_column
+    };
+}
+
+Token Lexer::make_eof_token(
+    std::size_t start_line,
+    std::size_t start_column
+) const {
+    return Token{
+        TokenKind::TOK_EOF,
+        std::string_view{},
+        start_line,
+        start_column
+    };
+}
+
 Token Lexer::next_token() {
     skip_whitespace();
 
@@ -60,73 +86,71 @@ Token Lexer::next_token() {
     const std::size_t start_column = column_;
 
     if (is_at_end()) {
-        return Token{
-            TokenKind::TOK_EOF,
-            std::string_view{},
+        return make_eof_token(
             start_line,
             start_column
-        };
+        );
     }
 
     const char current = advance();
 
     switch (current) {
         case ';':
-            return Token{
+            return make_token(
                 TokenKind::TOK_SEMICOLON,
-                source_.substr(start_pos, pos_ - start_pos),
+                start_pos,
                 start_line,
                 start_column
-            };
+            );
         case '+':
-            return Token{
+            return make_token(
                 TokenKind::TOK_PLUS,
-                source_.substr(start_pos, pos_ - start_pos),
+                start_pos,
                 start_line,
                 start_column
-            };
+            );
         case '-':
-            return Token{
+            return make_token(
                 TokenKind::TOK_MINUS,
-                source_.substr(start_pos, pos_ - start_pos),
+                start_pos,
                 start_line,
                 start_column
-            };
+            );
         case '*':
-            return Token{
+            return make_token(
                 TokenKind::TOK_STAR,
-                source_.substr(start_pos, pos_ - start_pos),
+                start_pos,
                 start_line,
                 start_column
-            };
+            );
         case '/':
-            return Token{
+            return make_token(
                 TokenKind::TOK_SLASH,
-                source_.substr(start_pos, pos_ - start_pos),
+                start_pos,
                 start_line,
                 start_column
-            };
+            );
         case '(':
-            return Token{
+            return make_token(
                 TokenKind::TOK_LPAREN,
-                source_.substr(start_pos, pos_ - start_pos),
+                start_pos,
                 start_line,
                 start_column
-            };
+            );
         case ')':
-            return Token{
+            return make_token(
                 TokenKind::TOK_RPAREN,
-                source_.substr(start_pos, pos_ - start_pos),
+                start_pos,
                 start_line,
                 start_column
-            };
+            );
         default:
-            return Token{
+            return make_token(
                 TokenKind::TOK_ERROR,
-                source_.substr(start_pos, pos_ - start_pos),
+                start_pos,
                 start_line,
                 start_column
-            };
+            );
     }
 }
 

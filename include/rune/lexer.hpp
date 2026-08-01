@@ -18,9 +18,20 @@ private:
 
     bool is_at_end() const;
     char peek() const;
-
     char advance();
     void skip_whitespace();
+
+    Token make_token(
+        TokenKind kind,
+        std::size_t start_pos,
+        std::size_t start_line,
+        std::size_t start_column
+    ) const;
+
+    Token make_eof_token(
+        std::size_t start_line,
+        std::size_t start_column
+    ) const;
 
 public:
     explicit Lexer(std::string_view source);

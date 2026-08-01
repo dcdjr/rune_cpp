@@ -1,4 +1,4 @@
-.PHONY: all
+.PHONY: all clean
 
 CXX = g++
 CXXFLAGS = -std=c++20 -Iinclude -Werror -Wall -Wpedantic -Wextra -g
@@ -8,3 +8,6 @@ OUT = runec
 
 all: $(SRC)
 	$(CXX) $(CXXFLAGS) $(SRC) -o $(OUT)
+
+clean:
+	rm $(OUT)

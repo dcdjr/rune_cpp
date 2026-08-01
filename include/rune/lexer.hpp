@@ -20,7 +20,7 @@ private:
     char peek() const;
 
     char advance();
-    char skip_whitespace();
+    void skip_whitespace();
 
 public:
     explicit Lexer(std::string_view source);

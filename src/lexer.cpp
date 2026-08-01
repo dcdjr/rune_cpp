@@ -21,17 +21,35 @@ char Lexer::peek() const {
 char Lexer::advance() {
     if (is_at_end()) return '\0';
 
-    char current_char = source_[pos_];
+    const char current = source_[pos_];
     pos_++;
 
-    if (current_char == '\n') {
+    if (current == '\n') {
         line_++;
         column_ = 1;
     } else {
         column_++;
     }
 
-    return current_char;
+    return current;
+}
+
+static bool is_whitespace(char c) {
+    return (c == ' ')  ||
+           (c == '\t') ||
+           (c == '\n') ||
+           (c == '\r');
+}
+
+void Lexer::skip_whitespace() {
+    while (!is_at_end()) {
+        const char current = peek();
+
+        if (is_whitespace(current))
+            advance();
+        else
+            break;
+    }
 }
 
 } // namespace rune

@@ -1,10 +1,11 @@
 #include "rune/lexer.hpp"
 #include "rune/token.hpp"
+#include <iostream>
 #include <vector>
 #include <string>
 
 int main() {
-    std::string example = "+-*/ a();";
+    std::string example = "   +-*/ a();";
 
     std::vector<rune::Token> tok_vec;
 

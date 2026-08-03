@@ -39,6 +39,9 @@ void rune::print_token(rune::Token tok) {
         case rune::TokenKind::TOK_SLASH:
             kind = "TOK_SLASH";
             break;
+        case rune::TokenKind::TOK_IDENTIFIER:
+            kind = "TOK_IDENTIFIER";
+            break;
         default:
             kind = "UNKNOWN";
     }

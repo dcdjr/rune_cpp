@@ -52,6 +52,12 @@ void Lexer::skip_whitespace() {
     }
 }
 
+static bool is_identifier_start(char c) {
+    return (c >= 'a' && c <= 'z') ||
+           (c >= 'A' && c <= 'Z') ||
+           (c == '_');
+}
+
 Token Lexer::make_token(
     TokenKind kind,
     std::size_t start_pos,
@@ -93,6 +99,15 @@ Token Lexer::next_token() {
     }
 
     const char current = advance();
+
+    if (is_identifier_start(current)) {
+        return make_token(
+            TokenKind::TOK_IDENTIFIER,
+            start_pos,
+            start_line,
+            start_column
+        );
+    }
 
     switch (current) {
         case ';':

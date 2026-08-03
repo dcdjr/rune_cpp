@@ -7,10 +7,11 @@
 int main() {
     std::string example1 = "   +-*/ age();";
     std::string example2 = "a age age2 _value print let foo_bar + abc;";
+    std::string example3 = "let age = 19;\nprint age;";
 
     std::vector<rune::Token> tok_vec;
 
-    rune::Lexer lexer(example2);
+    rune::Lexer lexer(example3);
 
     while (true) {
         rune::Token tok = lexer.next_token();

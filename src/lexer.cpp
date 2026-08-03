@@ -100,6 +100,26 @@ Token Lexer::scan_identifier(
     }
 }
 
+static bool is_digit(char c) {
+    return c >= '0' && c <= '9';
+}
+
+Token Lexer::scan_integer(
+    std::size_t start_pos,
+    std::size_t start_line,
+    std::size_t start_column
+) {
+    while (is_digit(peek())) {
+        advance();
+    }
+
+    return make_token(
+        TokenKind::TOK_INT,
+        start_pos,
+        start_line,
+        start_column
+    );
+}
 
 Token Lexer::make_token(
     TokenKind kind,
@@ -151,6 +171,14 @@ Token Lexer::next_token() {
         );
     }
 
+    if (is_digit(current)) {
+        return scan_integer(
+            start_pos,
+            start_line,
+            start_column
+        );
+    }
+
     switch (current) {
         case ';':
             return make_token(
@@ -183,6 +211,13 @@ Token Lexer::next_token() {
         case '/':
             return make_token(
                 TokenKind::TOK_SLASH,
+                start_pos,
+                start_line,
+                start_column
+            );
+        case '=':
+            return make_token(
+                TokenKind::TOK_EQUALS,
                 start_pos,
                 start_line,
                 start_column

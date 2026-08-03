@@ -20,6 +20,7 @@ enum class TokenKind {
     TOK_MINUS,
     TOK_STAR,
     TOK_SLASH,
+    TOK_EQUALS,
 
     TOK_LPAREN,
     TOK_RPAREN,

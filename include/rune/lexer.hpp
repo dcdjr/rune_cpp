@@ -27,6 +27,12 @@ private:
         std::size_t start_column
     );
 
+    Token scan_integer(
+        std::size_t start_pos,
+        std::size_t start_line,
+        std::size_t start_column
+    );
+
     Token make_token(
         TokenKind kind,
         std::size_t start_pos,

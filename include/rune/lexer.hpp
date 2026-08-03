@@ -21,6 +21,12 @@ private:
     char advance();
     void skip_whitespace();
 
+    Token scan_identifier(
+        std::size_t start_pos,
+        std::size_t start_line,
+        std::size_t start_column
+    );
+
     Token make_token(
         TokenKind kind,
         std::size_t start_pos,

@@ -1,4 +1,5 @@
 #include "rune/lexer.hpp"
+#include "rune/token.hpp"
 
 namespace rune
 {
@@ -58,6 +59,48 @@ static bool is_identifier_start(char c) {
            (c == '_');
 }
 
+static bool is_identifier_continue(char c) {
+    return is_identifier_start(c) ||
+           (c >= '0' && c <= '9');
+}
+
+Token Lexer::scan_identifier(
+    std::size_t start_pos,
+    std::size_t start_line,
+    std::size_t start_column
+) {
+    while (is_identifier_continue(peek())) {
+        advance();
+    }
+
+    const std::string_view lexeme =
+        source_.substr(start_pos, pos_ - start_pos);
+
+    if (lexeme == "print") {
+        return make_token(
+            TokenKind::TOK_PRINT,
+            start_pos,
+            start_line,
+            start_column
+        );
+    } else if (lexeme == "let") {
+        return make_token(
+            TokenKind::TOK_LET,
+            start_pos,
+            start_line,
+            start_column
+        );
+    } else {
+        return make_token(
+            TokenKind::TOK_IDENTIFIER,
+            start_pos,
+            start_line,
+            start_column
+        );
+    }
+}
+
+
 Token Lexer::make_token(
     TokenKind kind,
     std::size_t start_pos,
@@ -101,8 +144,7 @@ Token Lexer::next_token() {
     const char current = advance();
 
     if (is_identifier_start(current)) {
-        return make_token(
-            TokenKind::TOK_IDENTIFIER,
+        return scan_identifier(
             start_pos,
             start_line,
             start_column

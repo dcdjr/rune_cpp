@@ -5,11 +5,12 @@
 #include <string>
 
 int main() {
-    std::string example = "   +-*/ a();";
+    std::string example1 = "   +-*/ age();";
+    std::string example2 = "a age age2 _value print let foo_bar + abc;";
 
     std::vector<rune::Token> tok_vec;
 
-    rune::Lexer lexer(example);
+    rune::Lexer lexer(example2);
 
     while (true) {
         rune::Token tok = lexer.next_token();

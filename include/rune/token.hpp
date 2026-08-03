@@ -10,6 +10,7 @@ namespace rune
 enum class TokenKind {
     TOK_IDENTIFIER,
     TOK_PRINT,
+    TOK_LET,
 
     TOK_INT,
 

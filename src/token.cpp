@@ -6,9 +6,6 @@ void rune::print_token(rune::Token tok) {
     std::string kind = "";
 
     switch (tok.kind) {
-        case rune::TokenKind::TOK_PRINT:
-            kind = "TOK_PRINT";
-            break;
         case rune::TokenKind::TOK_EOF:
             kind = "TOK_EOF";
             break;
@@ -42,9 +39,19 @@ void rune::print_token(rune::Token tok) {
         case rune::TokenKind::TOK_IDENTIFIER:
             kind = "TOK_IDENTIFIER";
             break;
+        case rune::TokenKind::TOK_PRINT:
+            kind = "TOK_PRINT";
+            break;
+        case rune::TokenKind::TOK_LET:
+            kind = "TOK_LET";
+            break;
         default:
             kind = "UNKNOWN";
     }
 
-    std::cout << kind << std::endl;
+    std::cout 
+        << kind
+        << " \"" << tok.lexeme << "\""
+        << " at " << tok.line << ":" << tok.column
+        << '\n';
 }

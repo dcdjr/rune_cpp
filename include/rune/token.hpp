@@ -33,6 +33,8 @@ struct Token {
     std::size_t column;
 };
 
+void print_token(Token tok);
+
 } // rune namespace
 
 

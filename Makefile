@@ -1,9 +1,10 @@
-.PHONY: all clean
+.PHONY: all clean run
 
 CXX = g++
 CXXFLAGS = -std=c++20 -Iinclude -Werror -Wall -Wpedantic -Wextra -g
 
-SRC = src/main.cpp
+SRC = src/main.cpp src/lexer.cpp src/token.cpp
+
 OUT = runec
 
 all: $(SRC)
@@ -11,3 +12,6 @@ all: $(SRC)
 
 clean:
 	rm $(OUT)
+
+run: all
+	./$(OUT)

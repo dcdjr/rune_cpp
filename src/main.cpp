@@ -1,17 +1,33 @@
 #include "rune/lexer.hpp"
 #include "rune/token.hpp"
+#include <fstream>
+#include <sstream>
 #include <iostream>
 #include <vector>
 #include <string>
 
-int main() {
-    std::string example1 = "   +-*/ age();";
-    std::string example2 = "a age age2 _value print let foo_bar + abc;";
-    std::string example3 = "let age = 19;\nprint age;";
+int main(int argc, char **argv) {
+    if (argc != 2) {
+        std::cerr << "Usage: ./runec <input_file>" << '\n'; 
+        return 1;
+    }
+
+    std::ifstream ifs(argv[1]);
+
+    if (!ifs.is_open()) {
+        std::cerr 
+            << "Unable to open file "
+            << "\"" << argv[1] << "\""
+            << '\n'; 
+        return 1;
+    }
+
+    std::stringstream ss;
+    ss << ifs.rdbuf();
+    std::string program = ss.str();
 
     std::vector<rune::Token> tok_vec;
-
-    rune::Lexer lexer(example3);
+    rune::Lexer lexer(program);
 
     while (true) {
         rune::Token tok = lexer.next_token();

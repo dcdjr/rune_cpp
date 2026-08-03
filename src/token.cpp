@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 
-void rune::print_token(rune::Token tok) {
+void rune::print_token(const rune::Token& tok) {
     std::string kind = "";
 
     switch (tok.kind) {
@@ -36,8 +36,8 @@ void rune::print_token(rune::Token tok) {
         case rune::TokenKind::TOK_SLASH:
             kind = "TOK_SLASH";
             break;
-        case rune::TokenKind::TOK_EQUALS:
-            kind = "TOK_EQUALS";
+        case rune::TokenKind::TOK_EQUAL:
+            kind = "TOK_EQUAL";
             break;
         case rune::TokenKind::TOK_IDENTIFIER:
             kind = "TOK_IDENTIFIER";

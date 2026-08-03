@@ -1,4 +1,4 @@
-.PHONY: all clean run
+.PHONY: all clean
 
 CXX = g++
 CXXFLAGS = -std=c++20 -Iinclude -Werror -Wall -Wpedantic -Wextra -g
@@ -11,7 +11,4 @@ all: $(SRC)
 	$(CXX) $(CXXFLAGS) $(SRC) -o $(OUT)
 
 clean:
-	rm $(OUT)
-
-run: all
-	./$(OUT)
+	rm -f $(OUT)

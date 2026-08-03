@@ -20,7 +20,7 @@ enum class TokenKind {
     TOK_MINUS,
     TOK_STAR,
     TOK_SLASH,
-    TOK_EQUALS,
+    TOK_EQUAL,
 
     TOK_LPAREN,
     TOK_RPAREN,
@@ -36,7 +36,7 @@ struct Token {
     std::size_t column;
 };
 
-void print_token(Token tok);
+void print_token(const Token& tok);
 
 } // rune namespace
 

@@ -10,4 +10,4 @@ long term project.
 
 ## Current state
 
-rune is currently very early in development and has a basic lexer system.
+rune is currently early in development and has a basic lexer system.

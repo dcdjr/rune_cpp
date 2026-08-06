@@ -45,6 +45,8 @@ private:
         std::size_t start_column
     ) const;
 
+    void handle_comment();
+
     Token next_token();
 
 public:

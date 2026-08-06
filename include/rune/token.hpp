@@ -13,6 +13,8 @@ enum class TokenKind {
     TOK_PRINT,
     TOK_LET,
 
+    TOK_COMMENT,
+
     TOK_INT,
 
     TOK_SEMICOLON,

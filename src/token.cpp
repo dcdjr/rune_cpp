@@ -7,6 +7,9 @@ void rune::print_token(const rune::Token& token) {
     std::string kind = "";
 
     switch (token.kind) {
+        case rune::TokenKind::TOK_COMMENT:
+            kind = "TOK_COMMENT";
+            break;
         case rune::TokenKind::TOK_EOF:
             kind = "TOK_EOF";
             break;

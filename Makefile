@@ -1,7 +1,7 @@
 .PHONY: all test clean
 
 CXX = g++
-CXXFLAGS = -std=c++20 -Iinclude -Werror -Wall -Wpedantic -Wextra -g
+CXXFLAGS = -std=c++20 -Iinclude -Werror -Wall -Wpedantic -Wextra -fsanitize=address,undefined -g
 
 PROD_SRC = src/main.cpp       \
 		   src/lexer.cpp      \

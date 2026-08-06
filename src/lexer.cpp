@@ -148,6 +148,12 @@ Token Lexer::make_eof_token(
     };
 }
 
+void Lexer::handle_comment() {
+    while (!is_at_end() && peek() != '\n') {
+        advance();
+    }
+}
+
 Token Lexer::next_token() {
     skip_whitespace();
 
@@ -210,12 +216,23 @@ Token Lexer::next_token() {
                 start_column
             );
         case '/':
-            return make_token(
-                TokenKind::TOK_SLASH,
-                start_pos,
-                start_line,
-                start_column
-            );
+            if (peek() == '/') {
+                handle_comment();
+                return make_token(
+                    TokenKind::TOK_COMMENT,
+                    start_pos,
+                    start_line,
+                    start_column
+                );
+                break;
+            } else {
+                return make_token(
+                    TokenKind::TOK_SLASH,
+                    start_pos,
+                    start_line,
+                    start_column
+                );
+            }
         case '=':
             return make_token(
                 TokenKind::TOK_EQUAL,
@@ -250,6 +267,8 @@ Token Lexer::next_token() {
 void Lexer::lex_all(std::vector<Token>& tok_vec) {
     while (true) {
         rune::Token tok = next_token();
+        if (tok.kind == rune::TokenKind::TOK_COMMENT)
+            continue;
         tok_vec.push_back(tok);
         if (tok.kind == rune::TokenKind::TOK_EOF)
             break;

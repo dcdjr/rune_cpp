@@ -92,7 +92,7 @@ make clean
 
 ## Project structure
 
-`include/rune/`     Public headers
-`src/`              Implementation
-`tests/`            Automated tests
-`Makefile`          Build and test configuration
+`include/rune/`     Public headers  
+`src/`              Implementation  
+`tests/`            Automated tests  
+`Makefile`          Build and test configuration  

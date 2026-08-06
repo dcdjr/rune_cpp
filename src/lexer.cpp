@@ -217,7 +217,7 @@ Token Lexer::next_token() {
             );
         case '=':
             return make_token(
-                TokenKind::TOK_EQUALS,
+                TokenKind::TOK_EQUAL,
                 start_pos,
                 start_line,
                 start_column

@@ -52,9 +52,13 @@ void rune::print_token(const rune::Token& tok) {
             kind = "UNKNOWN";
     }
 
-    std::cout 
-        << kind
-        << " \"" << tok.lexeme << "\""
-        << " at " << tok.line << ":" << tok.column
-        << '\n';
+    if (tok.kind != rune::TokenKind::TOK_EOF) {
+        std::cout 
+            << kind
+            << " \"" << tok.lexeme << "\""
+            << " at " << tok.line << ":" << tok.column
+            << '\n';
+    } else {
+        std::cout << kind << '\n';
+    }
 }

@@ -224,7 +224,6 @@ Token Lexer::next_token() {
                     start_line,
                     start_column
                 );
-                break;
             } else {
                 return make_token(
                     TokenKind::TOK_SLASH,

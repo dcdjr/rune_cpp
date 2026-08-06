@@ -11,9 +11,9 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    const std::string program = rune::load_program(argv[1]);
+    const auto program = rune::load_program(argv[1]);
     
-    if (program == "") {
+    if (!program) {
         std::cerr 
             << "Unable to open file "
             << "\"" << argv[1] << "\""
@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    rune::Lexer lexer(program);
+    rune::Lexer lexer(program.value());
 
     std::vector<rune::Token> tokens;
     lexer.lex_all(tokens);

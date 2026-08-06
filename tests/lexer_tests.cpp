@@ -191,6 +191,72 @@ void test_empty_source_produces_only_eof() {
         << "test_empty_source_produces_only_eof PASSED\n";
 }
 
+void test_slash_at_eof() {
+    const std::string source = "/";
+    rune::Lexer lexer(source);
+
+    std::vector<rune::Token> tokens;
+    lexer.lex_all(tokens);
+
+    assert(tokens.size() == 2);
+    assert_token(tokens[0], rune::TokenKind::TOK_SLASH, "/");
+    assert(tokens.back().kind == rune::TokenKind::TOK_EOF);
+
+    std::cout
+        << "test_slash_at_eof PASSED\n";
+}
+
+void test_comment_at_eof() {
+    const std::string source = "// comment without newline";
+    rune::Lexer lexer(source);
+
+    std::vector<rune::Token> tokens;
+    lexer.lex_all(tokens);
+
+    assert(tokens.size() == 1);
+    assert(tokens.back().kind == rune::TokenKind::TOK_EOF);
+
+    std::cout
+        << "test_comment_at_eof PASSED\n";
+}
+
+void test_adjacent_integer_and_identifier() {
+    const std::string source = "42abc";
+    rune::Lexer lexer(source);
+
+    std::vector<rune::Token> tokens;
+    lexer.lex_all(tokens);
+
+    assert(tokens.size() == 3);
+    assert_token(tokens[0], rune::TokenKind::TOK_INT, "42");
+    assert_token(tokens[1], rune::TokenKind::TOK_IDENTIFIER, "abc");
+    assert(tokens.back().kind == rune::TokenKind::TOK_EOF);
+
+    std::cout
+        << "test_adjacent_integer_and_identifier PASSED\n";
+}
+
+void test_position_after_comment() {
+    const std::string source =
+        "// comment\n"
+        "let x = 1;";
+    rune::Lexer lexer(source);
+
+    std::vector<rune::Token> tokens;
+    lexer.lex_all(tokens);
+
+    assert(tokens.size() == 6);
+    assert(tokens[0].line == 2 && tokens[0].column == 1);
+    assert(tokens[1].line == 2 && tokens[1].column == 5);
+    assert(tokens[2].line == 2 && tokens[2].column == 7);
+    assert(tokens[3].line == 2 && tokens[3].column == 9);
+    assert(tokens[4].line == 2 && tokens[4].column == 10);
+    assert(tokens.back().kind == rune::TokenKind::TOK_EOF);
+
+    std::cout
+        << "test_position_after_comment PASSED\n";
+}
+
 void run_tests() {
     test_identifier();
     test_keywords();
@@ -200,4 +266,8 @@ void run_tests() {
     test_line_and_column_tracking();
     test_unknown_characters_produce_error();
     test_empty_source_produces_only_eof();
+    test_slash_at_eof();
+    test_comment_at_eof();
+    test_adjacent_integer_and_identifier();
+    test_position_after_comment();
 }

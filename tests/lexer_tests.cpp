@@ -5,12 +5,23 @@
 #include <iostream>
 
 void run_tests();
-void test_identifier();
-void test_keywords();
-void test_operators_and_punctuation();
+void assert_token(
+    const rune::Token& token,
+    rune::TokenKind expected_kind,
+    std::string_view expected_lexeme
+);
 
 int main() {
     run_tests();
+}
+
+void assert_token(
+    const rune::Token& token,
+    rune::TokenKind expected_kind,
+    std::string_view expected_lexeme
+) {
+    assert(token.kind == expected_kind);
+    assert(token.lexeme == expected_lexeme);
 }
 
 void test_identifier() {
@@ -20,14 +31,11 @@ void test_identifier() {
     std::vector<rune::Token> tokens;
     lexer.lex_all(tokens);
 
-    assert(tokens[0].kind == rune::TokenKind::TOK_IDENTIFIER);
-    assert(tokens[0].lexeme == "hello");
-
-    assert(tokens[1].kind == rune::TokenKind::TOK_IDENTIFIER);
-    assert(tokens[1].lexeme == "world2");
-
-    assert(tokens[2].kind == rune::TokenKind::TOK_IDENTIFIER);
-    assert(tokens[2].lexeme == "_value");
+    assert(tokens.size() == 4);
+    assert_token(tokens[0], rune::TokenKind::TOK_IDENTIFIER, "hello");
+    assert_token(tokens[1], rune::TokenKind::TOK_IDENTIFIER, "world2");
+    assert_token(tokens[2], rune::TokenKind::TOK_IDENTIFIER, "_value");
+    assert(tokens.back().kind == rune::TokenKind::TOK_EOF);
 
     std::cout << "test_identifier PASSED\n";
 }
@@ -39,14 +47,11 @@ void test_keywords() {
     std::vector<rune::Token> tokens;
     lexer.lex_all(tokens);
 
-    assert(tokens[0].kind == rune::TokenKind::TOK_LET);
-    assert(tokens[0].lexeme == "let");
-
-    assert(tokens[1].kind == rune::TokenKind::TOK_PRINT);
-    assert(tokens[1].lexeme == "print");
-
-    assert(tokens[2].kind == rune::TokenKind::TOK_IDENTIFIER);
-    assert(tokens[2].lexeme == "not_keyword");
+    assert(tokens.size() == 4);
+    assert_token(tokens[0], rune::TokenKind::TOK_LET, "let");
+    assert_token(tokens[1], rune::TokenKind::TOK_PRINT, "print");
+    assert_token(tokens[2], rune::TokenKind::TOK_IDENTIFIER, "not_keyword");
+    assert(tokens.back().kind == rune::TokenKind::TOK_EOF);
 
     std::cout << "test_keywords PASSED\n";
 }
@@ -58,17 +63,12 @@ void test_integers() {
     std::vector<rune::Token> tokens;
     lexer.lex_all(tokens);
 
-    assert(tokens[0].kind == rune::TokenKind::TOK_INT);
-    assert(tokens[0].lexeme == "1");
-
-    assert(tokens[1].kind == rune::TokenKind::TOK_INT);
-    assert(tokens[1].lexeme == "432");
-
-    assert(tokens[2].kind == rune::TokenKind::TOK_INT);
-    assert(tokens[2].lexeme == "943");
-    
-    assert(tokens[3].kind == rune::TokenKind::TOK_IDENTIFIER);
-    assert(tokens[3].lexeme == "not_integer");
+    assert(tokens.size() == 5);
+    assert_token(tokens[0], rune::TokenKind::TOK_INT, "1");
+    assert_token(tokens[1], rune::TokenKind::TOK_INT, "432");
+    assert_token(tokens[2], rune::TokenKind::TOK_INT, "943");
+    assert_token(tokens[3], rune::TokenKind::TOK_IDENTIFIER, "not_integer");
+    assert(tokens.back().kind == rune::TokenKind::TOK_EOF);
 
     std::cout << "test_integers PASSED\n";
 }
@@ -80,35 +80,18 @@ void test_comments() {
     std::vector<rune::Token> tokens;
     lexer.lex_all(tokens);
 
-    assert(tokens[0].kind == rune::TokenKind::TOK_LET);
-    assert(tokens[0].lexeme == "let");
-
-    assert(tokens[1].kind == rune::TokenKind::TOK_IDENTIFIER);
-    assert(tokens[1].lexeme == "x");
-
-    assert(tokens[2].kind == rune::TokenKind::TOK_EQUAL);
-    assert(tokens[2].lexeme == "=");
-    
-    assert(tokens[3].kind == rune::TokenKind::TOK_INT);
-    assert(tokens[3].lexeme == "123");
-
-    assert(tokens[4].kind == rune::TokenKind::TOK_SEMICOLON);
-    assert(tokens[4].lexeme == ";");
-
-    assert(tokens[5].kind == rune::TokenKind::TOK_LET);
-    assert(tokens[5].lexeme == "let");
-
-    assert(tokens[6].kind == rune::TokenKind::TOK_IDENTIFIER);
-    assert(tokens[6].lexeme == "y");
-    
-    assert(tokens[7].kind == rune::TokenKind::TOK_EQUAL);
-    assert(tokens[7].lexeme == "=");
-
-    assert(tokens[8].kind == rune::TokenKind::TOK_INT);
-    assert(tokens[8].lexeme == "456");
-
-    assert(tokens[9].kind == rune::TokenKind::TOK_SEMICOLON);
-    assert(tokens[9].lexeme == ";");
+    assert(tokens.size() == 11);
+    assert_token(tokens[0], rune::TokenKind::TOK_LET, "let");
+    assert_token(tokens[1], rune::TokenKind::TOK_IDENTIFIER, "x");
+    assert_token(tokens[2], rune::TokenKind::TOK_EQUAL, "=");
+    assert_token(tokens[3], rune::TokenKind::TOK_INT, "123");
+    assert_token(tokens[4], rune::TokenKind::TOK_SEMICOLON, ";");
+    assert_token(tokens[5], rune::TokenKind::TOK_LET, "let");
+    assert_token(tokens[6], rune::TokenKind::TOK_IDENTIFIER, "y");
+    assert_token(tokens[7], rune::TokenKind::TOK_EQUAL, "=");
+    assert_token(tokens[8], rune::TokenKind::TOK_INT, "456");
+    assert_token(tokens[9], rune::TokenKind::TOK_SEMICOLON, ";");
+    assert(tokens.back().kind == rune::TokenKind::TOK_EOF);
 
     std::cout << "test_comments PASSED\n";
 }
@@ -120,29 +103,16 @@ void test_operators_and_punctuation() {
     std::vector<rune::Token> tokens;
     lexer.lex_all(tokens);
 
-    assert(tokens[0].kind == rune::TokenKind::TOK_PLUS);
-    assert(tokens[0].lexeme == "+");
-
-    assert(tokens[1].kind == rune::TokenKind::TOK_MINUS);
-    assert(tokens[1].lexeme == "-");
-
-    assert(tokens[2].kind == rune::TokenKind::TOK_SLASH);
-    assert(tokens[2].lexeme == "/");
-
-    assert(tokens[3].kind == rune::TokenKind::TOK_STAR);
-    assert(tokens[3].lexeme == "*");
-
-    assert(tokens[4].kind == rune::TokenKind::TOK_LPAREN);
-    assert(tokens[4].lexeme == "(");
-
-    assert(tokens[5].kind == rune::TokenKind::TOK_RPAREN);
-    assert(tokens[5].lexeme == ")");
-
-    assert(tokens[6].kind == rune::TokenKind::TOK_EQUAL);
-    assert(tokens[6].lexeme == "=");
-
-    assert(tokens[7].kind == rune::TokenKind::TOK_SEMICOLON);
-    assert(tokens[7].lexeme == ";");
+    assert(tokens.size() == 9);
+    assert_token(tokens[0], rune::TokenKind::TOK_PLUS, "+");
+    assert_token(tokens[1], rune::TokenKind::TOK_MINUS, "-");
+    assert_token(tokens[2], rune::TokenKind::TOK_SLASH, "/");
+    assert_token(tokens[3], rune::TokenKind::TOK_STAR, "*");
+    assert_token(tokens[4], rune::TokenKind::TOK_LPAREN, "(");
+    assert_token(tokens[5], rune::TokenKind::TOK_RPAREN, ")");
+    assert_token(tokens[6], rune::TokenKind::TOK_EQUAL, "=");
+    assert_token(tokens[7], rune::TokenKind::TOK_SEMICOLON, ";");
+    assert(tokens.back().kind == rune::TokenKind::TOK_EOF);
 
     std::cout << "test_operators_and_punctuation PASSED\n";
 }
@@ -156,6 +126,8 @@ void test_line_and_column_tracking() {
 
     std::vector<rune::Token> tokens;
     lexer.lex_all(tokens);
+
+    assert(tokens.size() == 9);
 
     assert(tokens[0].line == 1);
     assert(tokens[0].column == 1);
@@ -181,6 +153,8 @@ void test_line_and_column_tracking() {
     assert(tokens[7].line == 2);
     assert(tokens[7].column == 10);
 
+    assert(tokens.back().kind == rune::TokenKind::TOK_EOF);
+
     std::cout
         << "test_line_and_column_tracking PASSED\n";
 }
@@ -192,14 +166,13 @@ void test_unknown_characters_produce_error() {
     std::vector<rune::Token> tokens;
     lexer.lex_all(tokens);
 
-    assert(tokens[0].kind == rune::TokenKind::TOK_ERROR);
-
-    assert(tokens[1].kind == rune::TokenKind::TOK_ERROR);
-
-    assert(tokens[2].kind == rune::TokenKind::TOK_ERROR);
-
-    assert(tokens[3].kind == rune::TokenKind::TOK_ERROR);
-
+    assert(tokens.size() == 5);
+    assert_token(tokens[0], rune::TokenKind::TOK_ERROR, ":");
+    assert_token(tokens[1], rune::TokenKind::TOK_ERROR, "\\");
+    assert_token(tokens[2], rune::TokenKind::TOK_ERROR, "|");
+    assert_token(tokens[3], rune::TokenKind::TOK_ERROR, "`");
+    assert(tokens.back().kind == rune::TokenKind::TOK_EOF);
+    
     std::cout
         << "test_unknown_characters_produce_error PASSED\n";
 }
@@ -212,7 +185,7 @@ void test_empty_source_produces_only_eof() {
     lexer.lex_all(tokens);
 
     assert(tokens.size() == 1);
-    assert(tokens[0].kind == rune::TokenKind::TOK_EOF);
+    assert(tokens.back().kind == rune::TokenKind::TOK_EOF);
 
      std::cout
         << "test_empty_source_produces_only_eof PASSED\n";

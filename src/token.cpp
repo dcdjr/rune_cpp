@@ -1,6 +1,7 @@
 #include "rune/token.hpp"
 #include <string>
 #include <iostream>
+#include <vector>
 
 void rune::print_token(const rune::Token& tok) {
     std::string kind = "";
@@ -60,5 +61,13 @@ void rune::print_token(const rune::Token& tok) {
             << '\n';
     } else {
         std::cout << kind << '\n';
+    }
+}
+
+void rune::print_all_tokens(
+    const std::vector<rune::Token> tok_vec
+) {
+        for (const auto& t : tok_vec) {
+        rune::print_token(t);
     }
 }

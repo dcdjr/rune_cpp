@@ -1,7 +1,6 @@
 #include "rune/lexer.hpp"
 #include "rune/token.hpp"
-#include <fstream>
-#include <sstream>
+#include "rune/file_utils.hpp"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -12,9 +11,9 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    std::ifstream ifs(argv[1]);
-
-    if (!ifs.is_open()) {
+    const std::string program = rune::load_program(argv[1]);
+    
+    if (program == "") {
         std::cerr 
             << "Unable to open file "
             << "\"" << argv[1] << "\""
@@ -22,26 +21,12 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    std::stringstream ss;
-    ss << ifs.rdbuf();
-    std::string program = ss.str();
-
-    std::vector<rune::Token> tok_vec;
     rune::Lexer lexer(program);
 
-    while (true) {
-        rune::Token tok = lexer.next_token();
+    std::vector<rune::Token> tok_vec;
+    lexer.lex_all(tok_vec);
 
-        tok_vec.push_back(tok);
-
-        if (tok.kind == rune::TokenKind::TOK_EOF) {
-            break;
-        }
-    }
-
-    for (const auto& t : tok_vec) {
-        rune::print_token(t);
-    }
+    print_all_tokens(tok_vec);
 
     return 0;
 }

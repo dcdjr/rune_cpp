@@ -1,5 +1,6 @@
 #include "rune/lexer.hpp"
 #include "rune/token.hpp"
+#include <vector>
 
 namespace rune
 {
@@ -244,6 +245,15 @@ Token Lexer::next_token() {
                 start_column
             );
     }
+}
+
+void Lexer::lex_all(std::vector<Token>& tok_vec) {
+    while (true) {
+        rune::Token tok = next_token();
+        tok_vec.push_back(tok);
+        if (tok.kind == rune::TokenKind::TOK_EOF)
+            break;
+    } 
 }
 
 } // namespace rune

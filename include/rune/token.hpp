@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <string_view>
+#include <vector>
 
 namespace rune
 {
@@ -37,6 +38,9 @@ struct Token {
 };
 
 void print_token(const Token& tok);
+void print_all_tokens(
+    const std::vector<rune::Token> tok_vec
+);
 
 } // rune namespace
 

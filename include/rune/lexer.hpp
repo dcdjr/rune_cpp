@@ -2,9 +2,9 @@
 #define RUNE_LEXER_HPP
 
 #include "token.hpp"
-
 #include <cstddef>
 #include <string_view>
+#include <vector>
 
 namespace rune 
 {
@@ -45,11 +45,12 @@ private:
         std::size_t start_column
     ) const;
 
+    Token next_token();
+
 public:
     explicit Lexer(std::string_view source);
 
-    Token next_token();
-
+    void lex_all(std::vector<Token>& tok_vec);
 };
 
 } // namespace rune

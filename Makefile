@@ -3,7 +3,10 @@
 CXX = g++
 CXXFLAGS = -std=c++20 -Iinclude -Werror -Wall -Wpedantic -Wextra -g
 
-SRC = src/main.cpp src/lexer.cpp src/token.cpp
+SRC = src/main.cpp  \
+	  src/lexer.cpp \
+	  src/token.cpp \
+	  src/file_utils.cpp
 
 OUT = runec
 

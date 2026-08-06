@@ -3,6 +3,8 @@
 #include <string>
 #include <cassert>
 #include <iostream>
+#include <vector>
+#include <string_view>
 
 void run_tests();
 void assert_token(

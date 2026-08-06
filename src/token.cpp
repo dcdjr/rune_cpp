@@ -3,10 +3,10 @@
 #include <iostream>
 #include <vector>
 
-void rune::print_token(const rune::Token& tok) {
+void rune::print_token(const rune::Token& token) {
     std::string kind = "";
 
-    switch (tok.kind) {
+    switch (token.kind) {
         case rune::TokenKind::TOK_EOF:
             kind = "TOK_EOF";
             break;
@@ -53,11 +53,11 @@ void rune::print_token(const rune::Token& tok) {
             kind = "UNKNOWN";
     }
 
-    if (tok.kind != rune::TokenKind::TOK_EOF) {
+    if (token.kind != rune::TokenKind::TOK_EOF) {
         std::cout 
             << kind
-            << " \"" << tok.lexeme << "\""
-            << " at " << tok.line << ":" << tok.column
+            << " \"" << token.lexeme << "\""
+            << " at " << token.line << ":" << token.column
             << '\n';
     } else {
         std::cout << kind << '\n';
@@ -65,9 +65,9 @@ void rune::print_token(const rune::Token& tok) {
 }
 
 void rune::print_all_tokens(
-    const std::vector<rune::Token> tok_vec
+    const std::vector<rune::Token>& tokens
 ) {
-        for (const auto& t : tok_vec) {
-        rune::print_token(t);
+        for (const auto& token : tokens) {
+        rune::print_token(token);
     }
 }

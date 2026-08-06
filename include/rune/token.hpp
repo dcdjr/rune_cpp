@@ -37,9 +37,9 @@ struct Token {
     std::size_t column;
 };
 
-void print_token(const Token& tok);
+void print_token(const Token& token);
 void print_all_tokens(
-    const std::vector<rune::Token> tok_vec
+    const std::vector<rune::Token>& tokens 
 );
 
 } // rune namespace

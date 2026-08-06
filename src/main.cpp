@@ -23,10 +23,10 @@ int main(int argc, char **argv) {
 
     rune::Lexer lexer(program);
 
-    std::vector<rune::Token> tok_vec;
-    lexer.lex_all(tok_vec);
+    std::vector<rune::Token> tokens;
+    lexer.lex_all(tokens);
 
-    print_all_tokens(tok_vec);
+    print_all_tokens(tokens);
 
     return 0;
 }

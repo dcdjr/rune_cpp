@@ -16,6 +16,7 @@ The lexer currently supports:
 - Integer literals
 - `let` and `print` keywords
 - Arithmetic operators
+- The assignment operator
 - Parentheses
 - Semicolons
 - Single-line comments
@@ -92,7 +93,9 @@ make clean
 
 ## Project structure
 
+```text
 `include/rune/`     Public headers  
 `src/`              Implementation  
 `tests/`            Automated tests  
 `Makefile`          Build and test configuration  
+```

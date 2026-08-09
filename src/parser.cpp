@@ -1,4 +1,7 @@
+#include "rune/ast.hpp"
 #include "rune/parser.hpp"
+#include <memory>
+#include <string>
 #include <stdexcept>
 
 namespace rune 
@@ -36,6 +39,15 @@ bool Parser::match(TokenKind kind) {
         return true;
     }
     return false;
+}
+
+std::unique_ptr<Expr> Parser::parse_factor() {
+    if (check(TokenKind::TOK_INT)) {
+        const Token& current = advance();
+        int value = std::stoi(std::string(current.lexeme));
+        return std::make_unique<IntegerExpr>(value);
+    }
+    throw std::runtime_error("Expected expression");
 }
 
 } // namespace rune

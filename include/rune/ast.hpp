@@ -15,11 +15,15 @@ public:
 
 class IntegerExpr : public Expr {
 private:
-    int value;
+    int value_;
 
 public:
-    explicit IntegerExpr(int value)
-        : value(value) {}
+    explicit IntegerExpr(int value_)
+        : value_(value_) {}
+
+    int value() const {
+        return value_;
+    }
 };
 
 class BinaryExpr : public Expr {
@@ -31,8 +35,8 @@ private:
 public:
     BinaryExpr(
         std::unique_ptr<Expr> left,
-        std::unique_ptr<Expr> right,
-        Token op
+        Token op,
+        std::unique_ptr<Expr> right
     ) : left(std::move(left)), op(op), right(std::move(right)) {}
 };
 

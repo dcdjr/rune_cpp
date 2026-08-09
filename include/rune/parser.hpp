@@ -2,6 +2,8 @@
 #define RUNE_PARSER_HPP 
 
 #include "rune/token.hpp"
+#include "rune/ast.hpp"
+#include <memory>
 
 namespace rune
 {
@@ -17,9 +19,12 @@ private:
     bool check(TokenKind kind) const;
     bool match(TokenKind kind);
 
+
 public:
     explicit Parser(const std::vector<Token>& tokens_)
         : tokens_(tokens_), current_(0) {}
+
+    std::unique_ptr<Expr> parse_factor();
 };
 
 } // namespace rune

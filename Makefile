@@ -1,30 +1,41 @@
-.PHONY: all test clean
+.PHONY: all lexer_tests parser_tests clean
 
 CXX = g++
 CXXFLAGS = -std=c++20 -Iinclude -Werror -Wall -Wpedantic -Wextra -fsanitize=address,undefined -g
 
-PROD_SRC = src/main.cpp       \
-		   src/lexer.cpp      \
-		   src/token.cpp      \
-		   src/parser.cpp     \
+PROD_SRC = src/main.cpp                    \
+		   src/lexer.cpp                   \
+		   src/token.cpp                   \
+		   src/parser.cpp                  \
 		   src/file_utils.cpp
 
 PROD_OUT = runec
 
-TEST_SRC = src/lexer.cpp          \
-		   src/token.cpp          \
-		   src/parser.cpp         \
-		   tests/lexer_tests.cpp  \
-		   tests/parser_tests.cpp \
+LEXER_TEST_SRC = src/lexer.cpp             \
+				 src/token.cpp             \
+				 tests/lexer_tests.cpp
 
-TEST_OUT = runec_tests
+LEXER_TEST_OUT = runec_lexer_tests
+
+PARSER_TEST_SRC = src/lexer.cpp            \
+				  src/token.cpp            \
+				  src/parser.cpp           \
+				  tests/parser_tests.cpp   \
+
+PARSER_TEST_OUT = runec_parser_tests
+
+TEST_OUT = $(LEXER_TEST_OUT) $(PARSER_TEST_OUT)
 
 all: $(PROD_SRC)
 	$(CXX) $(CXXFLAGS) $(PROD_SRC) -o $(PROD_OUT)
 
-test: $(TEST_SRC)
-	$(CXX) $(CXXFLAGS) $(TEST_SRC) -o $(TEST_OUT)
-	./$(TEST_OUT)
+lexer_tests: $(LEXER_TEST_SRC)
+	$(CXX) $(CXXFLAGS) $(LEXER_TEST_SRC) -o $(LEXER_TEST_OUT)
+	./$(LEXER_TEST_OUT)
+
+parser_tests: $(PARSER_TEST_SRC)
+	$(CXX) $(CXXFLAGS) $(PARSER_TEST_SRC) -o $(PARSER_TEST_OUT)
+	./$(PARSER_TEST_OUT)
 
 clean:
 	rm -f $(PROD_OUT) $(TEST_OUT)

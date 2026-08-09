@@ -19,5 +19,4 @@ jobs:
 
       - name: Build and run tests
         run: |
-          make lexer_tests
-          make parser_tests
+          make test

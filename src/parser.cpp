@@ -50,5 +50,25 @@ std::unique_ptr<Expr> Parser::parse_factor() {
     throw std::runtime_error("Expected expression");
 }
 
+std::unique_ptr<Expr> Parser::parse_term() {
+    std::unique_ptr<Expr> left = parse_factor();
+
+    while (
+        check(TokenKind::TOK_STAR) ||
+        check(TokenKind::TOK_SLASH)
+    ) {
+        Token op = advance();
+        std::unique_ptr<Expr> right = parse_factor();
+
+        left = std::make_unique<BinaryExpr>(
+            std::move(left),
+            op,
+            std::move(right)
+        );
+    }
+
+    return left;
+}
+
 } // namespace rune
 

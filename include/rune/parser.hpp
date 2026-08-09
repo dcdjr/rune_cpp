@@ -25,6 +25,8 @@ public:
         : tokens_(tokens_), current_(0) {}
 
     std::unique_ptr<Expr> parse_factor();
+
+    std::unique_ptr<Expr> parse_term();
 };
 
 } // namespace rune

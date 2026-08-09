@@ -6,13 +6,16 @@ CXXFLAGS = -std=c++20 -Iinclude -Werror -Wall -Wpedantic -Wextra -fsanitize=addr
 PROD_SRC = src/main.cpp       \
 		   src/lexer.cpp      \
 		   src/token.cpp      \
+		   src/parser.cpp     \
 		   src/file_utils.cpp
 
 PROD_OUT = runec
 
-TEST_SRC = src/lexer.cpp         \
-		   src/token.cpp         \
-		   tests/lexer_tests.cpp
+TEST_SRC = src/lexer.cpp          \
+		   src/token.cpp          \
+		   src/parser.cpp         \
+		   tests/lexer_tests.cpp  \
+		   tests/parser_tests.cpp \
 
 TEST_OUT = runec_tests
 

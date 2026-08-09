@@ -1,5 +1,7 @@
 # rune
 
+![CI](https://github.com/dcdjr/rune_cpp/actions/workflows/ci.yml/badge.svg)
+
 `rune` is a prototype programming language implementation in C++20.
 
 This project is meant to teach me how compilers work internally and how programming languages
@@ -94,8 +96,20 @@ make clean
 ## Project structure
 
 ```text
-`include/rune/`     Public headers  
-`src/`              Implementation  
-`tests/`            Automated tests  
-`Makefile`          Build and test configuration  
+include/rune/      Public headers  
+src/               Implementation  
+tests/             Automated tests  
+Makefile           Build and test configuration  
 ```
+
+## Roadmap
+
+- [x] Lexer
+- [x] Lexer tests
+- [x] Source position tracking
+- [x] Continuous integration
+- [ ] Expression AST
+- [ ] Recursive-descent parser
+- [ ] Variable declarations
+- [ ] Tree-walk interpreter
+- [ ] Functions and control flow

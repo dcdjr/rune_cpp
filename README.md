@@ -1,5 +1,7 @@
 # rune
 
+![CI](https://github.com/dcdjr/rune_cpp/actions/workflows/ci.yml/badge.svg)
+
 `rune` is a prototype programming language implementation in C++20.
 
 This project is meant to teach me how compilers work internally and how programming languages
@@ -8,7 +10,7 @@ long term project.
 
 ## Current status
 
-`rune` is early in development. It currently has a working lexer that converts source code into a sequence of tokens.
+`rune` is early in development. It currently has a working lexer and recursive-descent expression parser.
 
 The lexer currently supports:
 
@@ -16,11 +18,20 @@ The lexer currently supports:
 - Integer literals
 - `let` and `print` keywords
 - Arithmetic operators
+- The assignment operator
 - Parentheses
 - Semicolons
 - Single-line comments
 - Line and column tracking
 - Error tokens for unsupported characters
+
+The parser currently supports:
+
+- Integer expressions
+- "+", "-", "*", and "/"
+- Operator precedence
+- Left associativity
+- Parenthesized expressions
 
 The lexer is covered by automated tests and is compiled with AddressSanitizer and UndefinedBehaviorSanitizer enabled.
 
@@ -92,7 +103,21 @@ make clean
 
 ## Project structure
 
-`include/rune/`     Public headers  
-`src/`              Implementation  
-`tests/`            Automated tests  
-`Makefile`          Build and test configuration  
+```text
+include/rune/      Public headers  
+src/               Implementation  
+tests/             Automated tests  
+Makefile           Build and test configuration  
+```
+
+## Roadmap
+
+- [x] Lexer
+- [x] Lexer tests
+- [x] Source position tracking
+- [x] Continuous integration
+- [x] Expression AST
+- [x] Recursive-descent expression parser
+- [ ] Variable declarations
+- [ ] Tree-walk interpreter
+- [ ] Functions and control flow

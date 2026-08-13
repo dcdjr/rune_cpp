@@ -1,4 +1,8 @@
 runec
 runec_tests
+runec_parser_tests
+runec_lexer_tests
 compile_flags.txt
 rd.txt
+GRAMMAR.md
+practice/

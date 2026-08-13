@@ -32,11 +32,11 @@ all: $(PROD_SRC)
 	$(CXX) $(CXXFLAGS) $(PROD_SRC) -o $(PROD_OUT)
 
 lexer_tests: $(LEXER_TEST_SRC)
-	$(CXX) $(CXXFLAGS) $(LEXER_TEST_SRC) -o $(LEXER_TEST_OUT)
+	@$(CXX) $(CXXFLAGS) $(LEXER_TEST_SRC) -o $(LEXER_TEST_OUT)
 	./$(LEXER_TEST_OUT)
 
 parser_tests: $(PARSER_TEST_SRC)
-	$(CXX) $(CXXFLAGS) $(PARSER_TEST_SRC) -o $(PARSER_TEST_OUT)
+	@$(CXX) $(CXXFLAGS) $(PARSER_TEST_SRC) -o $(PARSER_TEST_OUT)
 	./$(PARSER_TEST_OUT)
 
 test: parser_tests lexer_tests

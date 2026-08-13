@@ -46,6 +46,17 @@ std::unique_ptr<Expr> Parser::parse_factor() {
         const Token& current = advance();
         int value = std::stoi(std::string(current.lexeme));
         return std::make_unique<IntegerExpr>(value);
+    } 
+    if (check(TokenKind::TOK_LPAREN)) {
+        advance();
+
+        auto expr = parse_expression();
+
+        if (!match(TokenKind::TOK_RPAREN)) {
+            throw std::runtime_error("Expected right parenthesis");
+        }
+
+        return expr;
     }
     throw std::runtime_error("Expected expression");
 }

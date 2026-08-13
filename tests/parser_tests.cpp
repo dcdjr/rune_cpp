@@ -157,9 +157,55 @@ void test_parse_expression() {
         << "test_parse_expression PASSED\n";
 }
 
+void test_parse_expression_with_parentheses() {
+    const std::string source = "(1 + 2) * 3";
+
+    std::vector<rune::Token> tokens;
+    rune::Lexer lexer(source);
+    lexer.lex_all(tokens);
+
+    rune::Parser parser(tokens);
+
+    auto expr = parser.parse_expression();
+
+    auto *root = 
+        dynamic_cast<rune::BinaryExpr*>(expr.get());
+
+    assert(root != nullptr);
+    assert(root->op().kind == rune::TokenKind::TOK_STAR);
+
+    auto *left_child =
+        dynamic_cast<const rune::BinaryExpr*>(&root->left());
+
+    auto *right_child =
+        dynamic_cast<const rune::IntegerExpr*>(&root->right());
+
+    assert(left_child != nullptr);
+    assert(right_child != nullptr);
+
+    assert(left_child->op().kind == rune::TokenKind::TOK_PLUS);
+    assert(right_child->value() == 3);
+
+    auto *left_grandchild =
+        dynamic_cast<const rune::IntegerExpr*>(&left_child->left());
+
+    auto *right_grandchild =
+        dynamic_cast<const rune::IntegerExpr*>(&left_child->right());
+
+    assert(left_grandchild != nullptr);
+    assert(right_grandchild != nullptr);
+
+    assert(left_grandchild->value() == 1);
+    assert(right_grandchild->value() == 2);
+
+    std::cout
+        << "test_parse_expression_with_parentheses PASSED\n";
+}
+
 void run_tests() {
     test_parse_factor_returns_integer_expr();
     test_parse_term_returns_binary_expr();
     test_left_associativity();
     test_parse_expression();
+    test_parse_expression_with_parentheses();
 } 

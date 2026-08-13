@@ -202,10 +202,28 @@ void test_parse_expression_with_parentheses() {
         << "test_parse_expression_with_parentheses PASSED\n";
 }
 
+void test_parse_expression_with_malformed_parentheses() {
+    const std::string source = "(1 + 2";
+
+    std::vector<rune::Token> tokens;
+    rune::Lexer lexer(source);
+    lexer.lex_all(tokens);
+
+    rune::Parser parser(tokens);
+
+    try {
+        parser.parse_expression();
+    } catch (const std::runtime_error& e) {
+        std::cout
+            << "test_parse_expression_with_malformed_parentheses PASSED\n";
+    }
+}
+
 void run_tests() {
     test_parse_factor_returns_integer_expr();
     test_parse_term_returns_binary_expr();
     test_left_associativity();
     test_parse_expression();
     test_parse_expression_with_parentheses();
+    test_parse_expression_with_malformed_parentheses();
 } 

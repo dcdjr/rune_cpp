@@ -19,14 +19,13 @@ private:
     bool check(TokenKind kind) const;
     bool match(TokenKind kind);
 
-
 public:
     explicit Parser(const std::vector<Token>& tokens_)
         : tokens_(tokens_), current_(0) {}
 
     std::unique_ptr<Expr> parse_factor();
-
     std::unique_ptr<Expr> parse_term();
+    std::unique_ptr<Expr> parse_expression();
 };
 
 } // namespace rune

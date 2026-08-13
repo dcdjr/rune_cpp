@@ -70,5 +70,25 @@ std::unique_ptr<Expr> Parser::parse_term() {
     return left;
 }
 
+std::unique_ptr<Expr> Parser::parse_expression() {
+    std::unique_ptr<Expr> left = parse_term();
+
+    while (
+        check(TokenKind::TOK_PLUS) ||
+        check(TokenKind::TOK_MINUS)
+    ) {
+        Token op = advance();
+        std::unique_ptr<Expr> right = parse_term();
+
+        left = std::make_unique<BinaryExpr>(
+            std::move(left),
+            op,
+            std::move(right)
+        );
+    }
+
+    return left;
+}
+
 } // namespace rune
 

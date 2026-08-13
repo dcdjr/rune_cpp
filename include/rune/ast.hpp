@@ -18,8 +18,8 @@ private:
     int value_;
 
 public:
-    explicit IntegerExpr(int value_)
-        : value_(value_) {}
+    explicit IntegerExpr(int value)
+        : value_(value) {}
 
     int value() const {
         return value_;
@@ -34,10 +34,10 @@ private:
 
 public:
     BinaryExpr(
-        std::unique_ptr<Expr> left_,
-        Token op_,
-        std::unique_ptr<Expr> right_
-    ) : left_(std::move(left_)), op_(op_), right_(std::move(right_)) {}
+        std::unique_ptr<Expr> left,
+        Token op,
+        std::unique_ptr<Expr> right
+    ) : left_(std::move(left)), op_(op), right_(std::move(right)) {}
 
     const Expr& left() const;
     const Expr& right() const;

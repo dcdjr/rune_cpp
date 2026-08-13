@@ -211,12 +211,22 @@ void test_parse_expression_with_malformed_parentheses() {
 
     rune::Parser parser(tokens);
 
+    bool threw = false;
+
     try {
         parser.parse_expression();
     } catch (const std::runtime_error& e) {
-        std::cout
-            << "test_parse_expression_with_malformed_parentheses PASSED\n";
+        threw = true;
+        assert(
+            std::string(e.what()) ==
+            "Expected right parenthesis"
+        );
     }
+
+    assert(threw);
+
+    std::cout
+        << "test_parse_expression_with_malformed_parentheses PASSED\n";
 }
 
 void run_tests() {

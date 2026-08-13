@@ -10,7 +10,7 @@ long term project.
 
 ## Current status
 
-`rune` is early in development. It currently has a working lexer that converts source code into a sequence of tokens.
+`rune` is early in development. It currently has a working lexer and recursive-descent expression parser.
 
 The lexer currently supports:
 
@@ -24,6 +24,14 @@ The lexer currently supports:
 - Single-line comments
 - Line and column tracking
 - Error tokens for unsupported characters
+
+The parser currently supports:
+
+- Integer expressions
+- "+", "-", "*", and "/"
+- Operator precedence
+- Left associativity
+- Parenthesized expressions
 
 The lexer is covered by automated tests and is compiled with AddressSanitizer and UndefinedBehaviorSanitizer enabled.
 
@@ -108,8 +116,8 @@ Makefile           Build and test configuration
 - [x] Lexer tests
 - [x] Source position tracking
 - [x] Continuous integration
-- [ ] Expression AST
-- [ ] Recursive-descent parser
+- [x] Expression AST
+- [x] Recursive-descent expression parser
 - [ ] Variable declarations
 - [ ] Tree-walk interpreter
 - [ ] Functions and control flow

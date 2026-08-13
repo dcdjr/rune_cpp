@@ -22,7 +22,7 @@ PARSER_TEST_SRC = src/lexer.cpp            \
 				  src/ast.cpp              \
 				  src/token.cpp            \
 				  src/parser.cpp           \
-				  tests/parser_tests.cpp   \
+				  tests/parser_tests.cpp
 
 PARSER_TEST_OUT = runec_parser_tests
 

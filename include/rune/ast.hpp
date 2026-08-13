@@ -44,6 +44,19 @@ public:
     const Token& op() const;
 };
 
+class VariableExpr : public Expr {
+private:
+    Token name_;
+
+public:
+    explicit VariableExpr(Token name)
+        : name_(name) {}
+
+    const Token& name() const {
+        return name_;
+    }
+};
+
 } // namespace rune
 
 #endif

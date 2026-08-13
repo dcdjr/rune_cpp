@@ -21,9 +21,7 @@ public:
     explicit IntegerExpr(int value)
         : value_(value) {}
 
-    int value() const {
-        return value_;
-    }
+    int value() const;
 };
 
 class BinaryExpr : public Expr {
@@ -52,9 +50,7 @@ public:
     explicit VariableExpr(Token name)
         : name_(name) {}
 
-    const Token& name() const {
-        return name_;
-    }
+    const Token& name() const;
 };
 
 } // namespace rune

@@ -46,7 +46,13 @@ std::unique_ptr<Expr> Parser::parse_factor() {
         const Token& current = advance();
         int value = std::stoi(std::string(current.lexeme));
         return std::make_unique<IntegerExpr>(value);
-    } 
+    }
+
+    if (check(TokenKind::TOK_IDENTIFIER)) {
+        const Token& current = advance();
+        return std::make_unique<VariableExpr>(current);
+    }
+    
     if (check(TokenKind::TOK_LPAREN)) {
         advance();
 
@@ -58,6 +64,7 @@ std::unique_ptr<Expr> Parser::parse_factor() {
 
         return expr;
     }
+
     throw std::runtime_error("Expected expression");
 }
 

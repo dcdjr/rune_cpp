@@ -313,6 +313,44 @@ void test_parse_let_statement() {
         << "test_parse_let_statement PASSED\n";
 }
 
+void test_parse_print_statement() {
+    const std::string source = "print age + 2;";
+
+    std::vector<rune::Token> tokens;
+    rune::Lexer lexer(source);
+    lexer.lex_all(tokens);
+
+    rune::Parser parser(tokens);
+
+    auto print_stmt = parser.parse_print_statement();
+
+    auto *root = 
+        dynamic_cast<rune::PrintStmt*>(print_stmt.get());
+
+    assert(root != nullptr);
+
+    auto *expression =
+        dynamic_cast<const rune::BinaryExpr*>(&root->expression());
+
+    assert(expression != nullptr);
+    assert(expression->op().kind == rune::TokenKind::TOK_PLUS);
+
+    auto *left_child =
+        dynamic_cast<const rune::VariableExpr*>(&expression->left());
+
+    auto *right_child =
+        dynamic_cast<const rune::IntegerExpr*>(&expression->right());
+
+    assert(left_child != nullptr);
+    assert(right_child != nullptr);
+
+    assert(left_child->name().lexeme == "age");
+    assert(right_child->value() == 2);
+
+    std::cout
+        << "test_parse_print_statement PASSED\n";
+}
+
 void test_malformed_declaration() {
     const std::string source = "let age 123;";
 
@@ -340,7 +378,7 @@ void test_malformed_declaration() {
         << "test_malformed_declaration PASSED\n";   
 }
 
-void test_parse_statement_dispatch() {
+void test_parse_statement_dispatch_to_let() {
     const std::string source = "let x = 42;";
 
     std::vector<rune::Token> tokens;
@@ -364,7 +402,33 @@ void test_parse_statement_dispatch() {
     assert(initializer->value() == 42);
 
     std::cout
-        << "test_parse_statement_dispatch PASSED\n";   
+        << "test_parse_statement_dispatch_to_let PASSED\n";
+}
+
+void test_parse_statement_dispatch_to_print() {
+    const std::string source = "print age;";
+
+    std::vector<rune::Token> tokens;
+    rune::Lexer lexer(source);
+    lexer.lex_all(tokens);
+
+    rune::Parser parser(tokens);
+
+    auto stmt = parser.parse_statement();
+
+    auto *root =
+        dynamic_cast<rune::PrintStmt*>(stmt.get());
+
+    assert(root != nullptr);
+
+    auto *expression =
+        dynamic_cast<const rune::VariableExpr*>(&root->expression());
+
+    assert(expression != nullptr);
+    assert(expression->name().lexeme == "age");
+
+    std::cout
+        << "test_parse_statement_dispatch_to_print PASSED\n";
 }
 
 void run_tests() {
@@ -379,6 +443,8 @@ void run_tests() {
 
     /* Statement tests */
     test_parse_let_statement();
+    test_parse_print_statement();
     test_malformed_declaration();
-    test_parse_statement_dispatch();
+    test_parse_statement_dispatch_to_let();
+    test_parse_statement_dispatch_to_print();
 } 

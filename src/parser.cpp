@@ -7,6 +7,15 @@
 namespace rune 
 {
 
+// Parser helper methods
+const Token& Parser::consume(TokenKind kind, const std::string& message) {
+    if (peek().kind == kind)
+        return advance();
+
+    throw std::runtime_error(message);
+}
+
+// Parser private methods
 const Token& Parser::peek() const {
     if (current_ >= tokens_.size()) {
         throw std::out_of_range("Parser cursor moved past token stream");
@@ -41,6 +50,7 @@ bool Parser::match(TokenKind kind) {
     return false;
 }
 
+// Parser expression methods
 std::unique_ptr<Expr> Parser::parse_factor() {
     if (check(TokenKind::TOK_INT)) {
         const Token& current = advance();
@@ -107,6 +117,21 @@ std::unique_ptr<Expr> Parser::parse_expression() {
 
     return left;
 }
+
+// Parser statement methods
+std::unique_ptr<Stmt> Parser::parse_let_statement() {
+    consume(TokenKind::TOK_LET, "Expected \"let\"");
+    Token name = consume(TokenKind::TOK_IDENTIFIER, "Expected identifier");
+    consume(TokenKind::TOK_EQUAL, "Expected \"=\"");
+    std::unique_ptr<Expr> initializer = parse_expression();
+    consume(TokenKind::TOK_SEMICOLON, "Expected \";\"");
+
+    return std::make_unique<LetStmt>(
+        name,
+        std::move(initializer)
+    );
+}
+
 
 } // namespace rune
 

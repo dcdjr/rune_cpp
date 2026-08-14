@@ -11,6 +11,7 @@ int main() {
     run_tests();
 }
 
+/* Expression tests */
 void test_parse_factor_returns_integer_expr() {
     const std::string source = "42";
 
@@ -260,7 +261,87 @@ void test_parse_variable_expr() {
         << "test_parse_variable_expr PASSED\n";
 }
 
+/* Statement tests */
+void test_parse_let_statement() {
+    const std::string source = "let age = 1 + 2 * 3;";
+
+    std::vector<rune::Token> tokens;
+    rune::Lexer lexer(source);
+    lexer.lex_all(tokens);
+
+    rune::Parser parser(tokens);
+
+    auto let_statement = parser.parse_let_statement();
+
+    auto *root =
+        dynamic_cast<rune::LetStmt*>(let_statement.get());
+
+    assert(root != nullptr);
+    assert(root->name().lexeme == "age");
+    
+    auto *initializer =
+        dynamic_cast<const rune::BinaryExpr*>(&root->initializer());
+
+    assert(initializer != nullptr);
+    assert(initializer->op().kind == rune::TokenKind::TOK_PLUS);
+
+    auto *left_child =
+        dynamic_cast<const rune::IntegerExpr*>(&initializer->left());
+
+    auto *right_child =
+        dynamic_cast<const rune::BinaryExpr*>(&initializer->right());
+
+    assert(left_child != nullptr);
+    assert(right_child != nullptr);
+
+    assert(left_child->value() == 1);
+    assert(right_child->op().kind == rune::TokenKind::TOK_STAR);
+
+    auto *left_grandchild =
+        dynamic_cast<const rune::IntegerExpr*>(&right_child->left());
+
+    auto *right_grandchild =
+        dynamic_cast<const rune::IntegerExpr*>(&right_child->right());
+
+    assert(left_grandchild != nullptr);
+    assert(right_grandchild != nullptr);
+
+    assert(left_grandchild->value() == 2);
+    assert(right_grandchild->value() == 3);
+
+    std::cout
+        << "test_parse_let_statement PASSED\n";
+}
+
+void test_malformed_declaration() {
+    const std::string source = "let age 123;";
+
+    std::vector<rune::Token> tokens;
+    rune::Lexer lexer(source);
+    lexer.lex_all(tokens);
+
+    rune::Parser parser(tokens);
+
+    bool threw = false;
+
+    try {
+        parser.parse_let_statement();
+    } catch (const std::runtime_error& e) {
+        threw = true;
+        assert(
+            std::string(e.what()) ==
+            "Expected \"=\""
+        );
+    }
+
+    assert(threw);
+
+    std::cout
+        << "test_malformed_declaration PASSED\n";   
+}
+
 void run_tests() {
+    /* Expression tests */
     test_parse_factor_returns_integer_expr();
     test_parse_term_returns_binary_expr();
     test_left_associativity();
@@ -268,4 +349,8 @@ void run_tests() {
     test_parse_expression_with_parentheses();
     test_parse_expression_with_malformed_parentheses();
     test_parse_variable_expr();
+
+    /* Statement tests */
+    test_parse_let_statement();
+    test_malformed_declaration();
 } 

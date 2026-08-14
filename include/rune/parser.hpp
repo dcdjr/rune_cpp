@@ -4,6 +4,7 @@
 #include "rune/token.hpp"
 #include "rune/ast.hpp"
 #include <memory>
+#include <string>
 
 namespace rune
 {
@@ -19,13 +20,20 @@ private:
     bool check(TokenKind kind) const;
     bool match(TokenKind kind);
 
+    // Helpers
+    const Token& consume(TokenKind kind, const std::string& message);
+
 public:
     explicit Parser(const std::vector<Token>& tokens_)
         : tokens_(tokens_), current_(0) {}
 
+    // Expression parsing
     std::unique_ptr<Expr> parse_factor();
     std::unique_ptr<Expr> parse_term();
     std::unique_ptr<Expr> parse_expression();
+
+    // Statement parsing
+    std::unique_ptr<Stmt> parse_let_statement();
 };
 
 } // namespace rune

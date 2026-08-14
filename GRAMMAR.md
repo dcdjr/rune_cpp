@@ -3,6 +3,8 @@
 ## Current grammar
 
 ```text
+program         -> statement* EOF
+
 statement       -> let_statement | print_statement
 let_statement   -> "let" IDENTIFIER "=" expression ";"
 print_statement -> "print" expression ";"

@@ -36,6 +36,9 @@ public:
     std::unique_ptr<Stmt> parse_let_statement();
     std::unique_ptr<Stmt> parse_print_statement();
     std::unique_ptr<Stmt> parse_statement();
+
+    // Program parsing
+    std::vector<std::unique_ptr<Stmt>> parse_program();
 };
 
 } // namespace rune

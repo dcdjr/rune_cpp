@@ -5,6 +5,7 @@
 #include "rune/ast.hpp"
 #include <memory>
 #include <string>
+#include <vector>
 
 namespace rune
 {

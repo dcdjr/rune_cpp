@@ -34,6 +34,7 @@ public:
 
     // Statement parsing
     std::unique_ptr<Stmt> parse_let_statement();
+    std::unique_ptr<Stmt> parse_statement();
 };
 
 } // namespace rune

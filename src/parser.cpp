@@ -132,6 +132,12 @@ std::unique_ptr<Stmt> Parser::parse_let_statement() {
     );
 }
 
+std::unique_ptr<Stmt> Parser::parse_statement() {
+    if (check(TokenKind::TOK_LET))
+        return parse_let_statement();
+
+    throw("Expected statement");
+}
 
 } // namespace rune
 

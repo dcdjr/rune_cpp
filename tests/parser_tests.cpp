@@ -340,6 +340,33 @@ void test_malformed_declaration() {
         << "test_malformed_declaration PASSED\n";   
 }
 
+void test_parse_statement_dispatch() {
+    const std::string source = "let x = 42;";
+
+    std::vector<rune::Token> tokens;
+    rune::Lexer lexer(source);
+    lexer.lex_all(tokens);
+
+    rune::Parser parser(tokens);
+
+    auto stmt = parser.parse_statement();
+
+    auto *root =
+        dynamic_cast<rune::LetStmt*>(stmt.get());
+
+    assert(root != nullptr);
+    assert(root->name().lexeme == "x");
+
+    auto *initializer =
+        dynamic_cast<const rune::IntegerExpr*>(&root->initializer());
+
+    assert(initializer != nullptr);
+    assert(initializer->value() == 42);
+
+    std::cout
+        << "test_parse_statement_dispatch PASSED\n";   
+}
+
 void run_tests() {
     /* Expression tests */
     test_parse_factor_returns_integer_expr();
@@ -353,4 +380,5 @@ void run_tests() {
     /* Statement tests */
     test_parse_let_statement();
     test_malformed_declaration();
+    test_parse_statement_dispatch();
 } 

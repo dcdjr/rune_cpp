@@ -431,6 +431,49 @@ void test_parse_statement_dispatch_to_print() {
         << "test_parse_statement_dispatch_to_print PASSED\n";
 }
 
+void test_parse_program() {
+    const std::string source =
+        "let age = 123;"
+        "print age;";
+
+    std::vector<rune::Token> tokens;
+    rune::Lexer lexer(source);
+    lexer.lex_all(tokens);
+
+    rune::Parser parser(tokens);
+
+    std::vector<std::unique_ptr<rune::Stmt>> statements
+        = parser.parse_program();
+
+    assert(statements.size() == 2);
+    
+    auto *let_stmt =
+        dynamic_cast<rune::LetStmt*>(statements[0].get());
+
+    assert(let_stmt);
+    assert(let_stmt->name().lexeme == "age");
+    
+    auto *let_stmt_initializer =
+        dynamic_cast<const rune::IntegerExpr*>(&let_stmt->initializer());
+
+    assert(let_stmt_initializer != nullptr);
+    assert(let_stmt_initializer->value() == 123);
+
+    auto *print_stmt =
+        dynamic_cast<rune::PrintStmt*>(statements[1].get());
+
+    assert(print_stmt != nullptr);
+
+    auto *print_stmt_expression =
+        dynamic_cast<const rune::VariableExpr*>(&print_stmt->expression());
+
+    assert(print_stmt_expression != nullptr);
+    assert(print_stmt_expression->name().lexeme == "age");
+
+    std::cout
+        << "test_parse_program_from_example_source_file PASSED\n";
+}
+
 void run_tests() {
     /* Expression tests */
     test_parse_factor_returns_integer_expr();
@@ -447,4 +490,5 @@ void run_tests() {
     test_malformed_declaration();
     test_parse_statement_dispatch_to_let();
     test_parse_statement_dispatch_to_print();
+    test_parse_program();
 } 

@@ -155,7 +155,7 @@ std::unique_ptr<Stmt> Parser::parse_statement() {
 std::vector<std::unique_ptr<Stmt>> Parser::parse_program() {
     std::vector<std::unique_ptr<Stmt>> statements;
 
-    while (check(TokenKind::TOK_EOF))
+    while (!check(TokenKind::TOK_EOF))
         statements.push_back(parse_statement());
 
     return statements;

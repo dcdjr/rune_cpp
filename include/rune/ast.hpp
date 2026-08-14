@@ -75,6 +75,17 @@ public:
     const Expr& initializer() const;
 };
 
+class PrintStmt : public Stmt {
+private:
+    std::unique_ptr<Expr> expression_;
+
+public:
+    explicit PrintStmt(std::unique_ptr<Expr> expression)
+        : expression_(std::move(expression)) {}
+
+    const Expr& expression() const;
+};
+
 } // namespace rune
 
 #endif

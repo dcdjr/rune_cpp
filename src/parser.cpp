@@ -132,11 +132,24 @@ std::unique_ptr<Stmt> Parser::parse_let_statement() {
     );
 }
 
+std::unique_ptr<Stmt> Parser::parse_print_statement() {
+    consume(TokenKind::TOK_PRINT, "Expected \"print\"");
+    std::unique_ptr<Expr> expression = parse_expression();
+    consume(TokenKind::TOK_SEMICOLON, "Expected \";\"");
+
+    return std::make_unique<PrintStmt>(
+        std::move(expression)
+    );
+}
+
 std::unique_ptr<Stmt> Parser::parse_statement() {
     if (check(TokenKind::TOK_LET))
         return parse_let_statement();
 
-    throw("Expected statement");
+    if (check(TokenKind::TOK_PRINT))
+        return parse_print_statement();
+
+    throw std::runtime_error("Expected statement");
 }
 
 } // namespace rune

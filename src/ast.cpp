@@ -39,5 +39,10 @@ const Expr& LetStmt::initializer() const {
     return *initializer_;
 }
 
+// PrintStmt functions
+const Expr& PrintStmt::expression() const {
+    return *expression_;
+}
+
 } // namespace rune
 

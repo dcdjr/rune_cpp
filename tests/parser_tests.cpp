@@ -229,6 +229,37 @@ void test_parse_expression_with_malformed_parentheses() {
         << "test_parse_expression_with_malformed_parentheses PASSED\n";
 }
 
+void test_parse_variable_expr() {
+    const std::string source = "age * 1 + 2";
+
+    std::vector<rune::Token> tokens;
+    rune::Lexer lexer(source);
+    lexer.lex_all(tokens);
+
+    rune::Parser parser(tokens);
+
+    auto expr = parser.parse_expression();
+
+    auto *root =
+        dynamic_cast<rune::BinaryExpr*>(expr.get());
+
+    assert(root != nullptr);
+
+    auto *left_child =
+        dynamic_cast<const rune::BinaryExpr*>(&root->left());
+
+    assert(left_child != nullptr);
+
+    auto *left_grandchild =
+        dynamic_cast<const rune::VariableExpr*>(&left_child->left());
+
+    assert(left_grandchild != nullptr);
+    assert(left_grandchild->name().lexeme == "age");
+
+    std::cout
+        << "test_parse_variable_expr PASSED\n";
+}
+
 void run_tests() {
     test_parse_factor_returns_integer_expr();
     test_parse_term_returns_binary_expr();
@@ -236,4 +267,5 @@ void run_tests() {
     test_parse_expression();
     test_parse_expression_with_parentheses();
     test_parse_expression_with_malformed_parentheses();
+    test_parse_variable_expr();
 } 

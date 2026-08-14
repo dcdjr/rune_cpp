@@ -220,7 +220,7 @@ void test_parse_expression_with_malformed_parentheses() {
         threw = true;
         assert(
             std::string(e.what()) ==
-            "Expected right parenthesis"
+            "Error: Expected right parenthesis"
         );
     }
 
@@ -368,7 +368,7 @@ void test_malformed_declaration() {
         threw = true;
         assert(
             std::string(e.what()) ==
-            "Expected \"=\""
+            "Error: Expected \"=\""
         );
     }
 

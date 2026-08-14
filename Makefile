@@ -1,4 +1,4 @@
-.PHONY: all lexer_tests parser_tests test clean s
+.PHONY: all lexer_tests parser_tests interpreter_tests test clean s
 
 CXX = g++
 CXXFLAGS = -std=c++20 -Iinclude -Werror -Wall -Wpedantic -Wextra -fsanitize=address,undefined -g

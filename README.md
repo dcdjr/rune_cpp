@@ -10,7 +10,9 @@ long term project.
 
 ## Current status
 
-`rune` is early in development. It currently has a working lexer and recursive-descent expression parser.
+`rune` currently has a working lexer and recursive-descent parser capable
+of parsing complete programs containing variable declarations and print
+statements.
 
 The lexer currently supports:
 
@@ -27,11 +29,13 @@ The lexer currently supports:
 
 The parser currently supports:
 
-- Integer expressions
-- "+", "-", "*", and "/"
-- Operator precedence
-- Left associativity
+- Integer and variable expressions
+- Arithmetic expressions
+- Operator precedence and left associativity
 - Parenthesized expressions
+- let declarations
+- print statements
+- Multi-statement program parsing
 
 The lexer is covered by automated tests and is compiled with AddressSanitizer and UndefinedBehaviorSanitizer enabled.
 
@@ -106,18 +110,20 @@ make clean
 ```text
 include/rune/      Public headers  
 src/               Implementation  
+examples/          Examples rune programs
 tests/             Automated tests  
 Makefile           Build and test configuration  
+GRAMMAR.md         Contains rune's chosen grammar
 ```
 
 ## Roadmap
 
-- [x] Lexer
-- [x] Lexer tests
-- [x] Source position tracking
-- [x] Continuous integration
 - [x] Expression AST
 - [x] Recursive-descent expression parser
-- [ ] Variable declarations
+- [x] Statement AST
+- [x] Variable declaration parsing
+- [x] Print statement parsing
+- [x] Whole-program parsing
 - [ ] Tree-walk interpreter
+- [ ] Runtime variable environment
 - [ ] Functions and control flow

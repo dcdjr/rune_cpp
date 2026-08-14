@@ -8,6 +8,7 @@
 namespace rune 
 {
 
+// Expression AST Nodes
 class Expr {
 public:
     virtual ~Expr() = default;
@@ -21,9 +22,7 @@ public:
     explicit IntegerExpr(int value)
         : value_(value) {}
 
-    int value() const {
-        return value_;
-    }
+    int value() const;
 };
 
 class BinaryExpr : public Expr {
@@ -42,6 +41,49 @@ public:
     const Expr& left() const;
     const Expr& right() const;
     const Token& op() const;
+};
+
+class VariableExpr : public Expr {
+private:
+    Token name_;
+
+public:
+    explicit VariableExpr(Token name)
+        : name_(name) {}
+
+    const Token& name() const;
+};
+
+// Statement AST Nodes
+class Stmt {
+public:
+    virtual ~Stmt() = default;
+};
+
+class LetStmt : public Stmt {
+private:
+    Token name_;
+    std::unique_ptr<Expr> initializer_;
+
+public:
+    LetStmt(
+        Token name,
+        std::unique_ptr<Expr> initializer
+    ) : name_(name), initializer_(std::move(initializer)) {}
+
+    const Token& name() const;
+    const Expr& initializer() const;
+};
+
+class PrintStmt : public Stmt {
+private:
+    std::unique_ptr<Expr> expression_;
+
+public:
+    explicit PrintStmt(std::unique_ptr<Expr> expression)
+        : expression_(std::move(expression)) {}
+
+    const Expr& expression() const;
 };
 
 } // namespace rune

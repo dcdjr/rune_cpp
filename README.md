@@ -80,13 +80,13 @@ make
 This creates:
 
 ```text
-runec
+build/runec
 ```
 
 Pass a `rune` source file to the executable:
 
 ```sh
-./runec path/to/program.rn
+./build/runec path/to/program.rn
 ```
 
 ## Testing

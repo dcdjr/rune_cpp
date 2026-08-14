@@ -13,13 +13,13 @@ const Token& Parser::consume(TokenKind kind, const std::string& message) {
     if (peek().kind == kind)
         return advance();
 
-    throw std::runtime_error(message);
+    throw std::runtime_error("Error: " + message);
 }
 
 // Parser private methods
 const Token& Parser::peek() const {
     if (current_ >= tokens_.size()) {
-        throw std::out_of_range("Parser cursor moved past token stream");
+        throw std::out_of_range("Error: Parser cursor moved past token stream");
     }
 
     return tokens_[current_];
@@ -70,13 +70,13 @@ std::unique_ptr<Expr> Parser::parse_factor() {
         auto expr = parse_expression();
 
         if (!match(TokenKind::TOK_RPAREN)) {
-            throw std::runtime_error("Expected right parenthesis");
+            throw std::runtime_error("Error: Expected right parenthesis");
         }
 
         return expr;
     }
 
-    throw std::runtime_error("Expected expression");
+    throw std::runtime_error("Error: Expected expression");
 }
 
 std::unique_ptr<Expr> Parser::parse_term() {
@@ -150,7 +150,7 @@ std::unique_ptr<Stmt> Parser::parse_statement() {
     if (check(TokenKind::TOK_PRINT))
         return parse_print_statement();
 
-    throw std::runtime_error("Expected statement");
+    throw std::runtime_error("Error: Expected statement");
 }
 
 std::vector<std::unique_ptr<Stmt>> Parser::parse_program() {

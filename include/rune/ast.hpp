@@ -8,6 +8,7 @@
 namespace rune 
 {
 
+// Expression AST Nodes
 class Expr {
 public:
     virtual ~Expr() = default;
@@ -51,6 +52,27 @@ public:
         : name_(name) {}
 
     const Token& name() const;
+};
+
+// Statement AST Nodes
+class Stmt {
+public:
+    virtual ~Stmt() = default;
+};
+
+class LetStmt : public Stmt {
+private:
+    Token name_;
+    std::unique_ptr<Expr> initializer_;
+
+public:
+    LetStmt(
+        Token name,
+        std::unique_ptr<Expr> initializer
+    ) : name_(name), initializer_(std::move(initializer)) {}
+
+    const Token& name() const;
+    const Expr& initializer() const;
 };
 
 } // namespace rune

@@ -3,6 +3,8 @@
 namespace rune 
 {
 
+/* Expr AST Nodes */
+
 // IntegerExpr functions
 int IntegerExpr::value() const {
     return value_;
@@ -24,6 +26,17 @@ const Token& BinaryExpr::op() const {
 // VariableExpr functions
 const Token& VariableExpr::name() const {
     return name_;
+}
+
+/* Stmt AST Nodes */
+
+// LetStmt functions
+const Token& LetStmt::name() const {
+    return name_;
+}
+
+const Expr& LetStmt::initializer() const {
+    return *initializer_;
 }
 
 } // namespace rune

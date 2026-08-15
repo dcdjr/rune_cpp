@@ -14,6 +14,7 @@ private:
 
 public:
     int evaluate(const Expr& expr);
+    void execute(const Stmt& stmt);
     void define(const std::string& name, int value);
 };
 

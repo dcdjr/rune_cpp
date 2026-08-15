@@ -10,6 +10,7 @@ int main() {
     run_tests();
 }
 
+// Expression evaluation tests
 void test_interpreter_evaluates_integer_expression() {
     const rune::IntegerExpr int_expr(42);
 
@@ -296,6 +297,64 @@ void test_defined_variable_inside_binary_expr() {
         << "test_defined_variable_inside_binary_expr PASSED\n";
 }
 
+void test_undefined_variable_throws_error() {
+    rune::Interpreter interpreter;
+
+    const rune::Token name = rune::Token{
+        rune::TokenKind::TOK_IDENTIFIER,
+        "x",
+        1,
+        1
+    };
+
+    const rune::VariableExpr var(name);
+
+    bool threw = false;
+
+    try {
+        interpreter.evaluate(var);
+    } catch (const std::runtime_error& e) {
+        threw = true;
+        assert(
+            std::string(e.what()) ==
+            "Error: Undefined variable: \"x\""
+        );
+    }
+
+    assert(threw);
+
+    std::cout
+        << "test_undefined_variable_throws_error PASSED\n";
+}
+
+// Statement execution tests
+void test_interpreter_executes_let_statement() {
+    rune::Interpreter interpreter;
+
+    std::unique_ptr<rune::Expr> initializer =
+        std::make_unique<rune::IntegerExpr>(42);
+
+    const rune::Token name = rune::Token{
+        rune::TokenKind::TOK_IDENTIFIER,
+        "x",
+        1,
+        5
+    };
+
+    const rune::LetStmt let_stmt(name, std::move(initializer));
+
+    interpreter.execute(let_stmt);
+
+    rune::VariableExpr var(name);
+
+    int value = interpreter.evaluate(var);
+
+    assert(value == 42);
+
+    std::cout
+        << "test_interpreter_executes_let_statement PASSED\n";
+}
+
 void run_tests() {
     test_interpreter_evaluates_integer_expression();
     test_interpreter_plus_op();
@@ -305,5 +364,7 @@ void run_tests() {
     test_interpreter_evaluates_nested_binary_exprs();
     test_interpreter_throws_divide_by_zero_error();
     test_defined_variable();
+    test_undefined_variable_throws_error();
     test_defined_variable_inside_binary_expr();
+    test_interpreter_executes_let_statement();
 } 

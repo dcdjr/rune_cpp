@@ -47,6 +47,17 @@ int Interpreter::evaluate(const Expr& expr) {
     throw std::runtime_error("Error: Unsupported expression type");
 }
 
+void Interpreter::execute(const Stmt& stmt) {
+    if (auto *let_stmt = 
+            dynamic_cast<const LetStmt*>(&stmt)) {
+        int value = evaluate(let_stmt->initializer());
+        define(std::string(let_stmt->name().lexeme), value);
+        return;
+    }
+
+    throw std::runtime_error("Error: Unsupported statement type");
+}
+
 void Interpreter::define(const std::string& name, int value) {
     environment_[name] = value;
 }

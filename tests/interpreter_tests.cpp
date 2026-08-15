@@ -235,6 +235,67 @@ void test_interpreter_throws_divide_by_zero_error() {
         << "test_interpreter_throws_divide_by_zero_error PASSED\n";
 }
 
+void test_defined_variable() {
+    rune::Interpreter interpreter;
+
+    interpreter.define("x", 42);
+
+    const rune::Token name = rune::Token{
+        rune::TokenKind::TOK_IDENTIFIER,
+        "x",
+        1,
+        1
+    };
+
+    const rune::VariableExpr var(name);
+
+    int value = interpreter.evaluate(var);
+
+    assert(value == 42);
+
+    std::cout
+        << "test_defined_variable PASSED\n";
+}
+
+void test_defined_variable_inside_binary_expr() {
+    rune::Interpreter interpreter;
+
+    interpreter.define("x", 10);
+
+    const rune::Token name = rune::Token{
+        rune::TokenKind::TOK_IDENTIFIER,
+        "x",
+        1,
+        1
+    };
+
+    std::unique_ptr<rune::Expr> left =
+        std::make_unique<rune::VariableExpr>(name);
+
+    std::unique_ptr<rune::Expr> right =
+        std::make_unique<rune::IntegerExpr>(5);
+
+    const rune::Token op_plus = rune::Token{
+        rune::TokenKind::TOK_PLUS,
+        "+",
+        1,
+        3
+    };
+
+    rune::BinaryExpr binary_expr(
+        std::move(left),
+        op_plus,
+        std::move(right)
+    );
+
+    int value = interpreter.evaluate(binary_expr);
+
+    assert(value == 15);
+
+    std::cout
+        << "test_defined_variable_inside_binary_expr PASSED\n";
+}
+
 void run_tests() {
     test_interpreter_evaluates_integer_expression();
     test_interpreter_plus_op();
@@ -243,4 +304,6 @@ void run_tests() {
     test_interpreter_divide_op();
     test_interpreter_evaluates_nested_binary_exprs();
     test_interpreter_throws_divide_by_zero_error();
+    test_defined_variable();
+    test_defined_variable_inside_binary_expr();
 } 

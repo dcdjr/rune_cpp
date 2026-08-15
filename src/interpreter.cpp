@@ -34,7 +34,21 @@ int Interpreter::evaluate(const Expr& expr) {
         }
     }
 
+    if (auto *variable =
+            dynamic_cast<const VariableExpr*>(&expr)) {
+        std::string name(variable->name().lexeme);
+
+        auto it = environment_.find(name);
+        if (it == environment_.end())
+            throw std::runtime_error("Error: Undefined variable: \"" + name + "\"");
+        return it->second;
+    }
+
     throw std::runtime_error("Error: Unsupported expression type");
+}
+
+void Interpreter::define(const std::string& name, int value) {
+    environment_[name] = value;
 }
 
 } // namespace rune

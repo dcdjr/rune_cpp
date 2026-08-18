@@ -37,12 +37,12 @@ The parser currently supports:
 
 The interpreter currently supports:
 
-Integer expression evaluation
-Arithmetic with +, -, *, and /
-Variable definitions and lookup
-let statement execution
-print statement execution
-Runtime errors for undefined variables and division by zero
+- Integer expression evaluation
+- Arithmetic with +, -, *, and /
+- Variable definitions and lookup
+- let statement execution
+- print statement execution
+- Runtime errors for undefined variables and division by zero
 
 The lexer, parser, and interpreter are covered by automated tests. Builds use AddressSanitizer and UndefinedBehaviorSanitizer during development, and the test suite runs automatically through GitHub Actions.
 

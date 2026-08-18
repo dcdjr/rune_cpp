@@ -44,5 +44,14 @@ const Expr& PrintStmt::expression() const {
     return *expression_;
 }
 
+// ReassignStmt functions
+const Token& ReassignStmt::name() const {
+    return name_;
+}
+
+const Expr& ReassignStmt::reinitializer() const {
+    return *reinitializer_;
+}
+
 } // namespace rune
 

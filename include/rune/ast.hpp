@@ -86,6 +86,21 @@ public:
     const Expr& expression() const;
 };
 
+class ReassignStmt : public Stmt {
+private:
+    Token name_;
+    std::unique_ptr<Expr> reinitializer_;
+
+public:
+    ReassignStmt(
+        Token name,
+        std::unique_ptr<Expr> reinitializer
+    ) : name_(name), reinitializer_(std::move(reinitializer)) {}
+
+    const Token& name() const;
+    const Expr& reinitializer() const;
+};
+
 } // namespace rune
 
 #endif

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cassert>
 #include <string>
+#include <sstream>
 
 void run_tests();
 
@@ -14,7 +15,7 @@ int main() {
 void test_interpreter_evaluates_integer_expression() {
     const rune::IntegerExpr int_expr(42);
 
-    rune::Interpreter interpreter;
+    rune::Interpreter interpreter(std::cout);
 
     int int_expr_value = interpreter.evaluate(int_expr);
 
@@ -45,7 +46,7 @@ void test_interpreter_plus_op() {
         std::move(right)
     );
 
-    rune::Interpreter interpreter;
+    rune::Interpreter interpreter(std::cout);
 
     int value = interpreter.evaluate(binary_expr);
 
@@ -76,7 +77,7 @@ void test_interpreter_minus_op() {
         std::move(right)
     );
 
-    rune::Interpreter interpreter;
+    rune::Interpreter interpreter(std::cout);
 
     int value = interpreter.evaluate(binary_expr);
 
@@ -107,7 +108,7 @@ void test_interpreter_multiply_op() {
         std::move(right)
     );
 
-    rune::Interpreter interpreter;
+    rune::Interpreter interpreter(std::cout);
 
     int value = interpreter.evaluate(binary_expr);
 
@@ -138,7 +139,7 @@ void test_interpreter_divide_op() {
         std::move(right)
     );
 
-    rune::Interpreter interpreter;
+    rune::Interpreter interpreter(std::cout);
 
     int value = interpreter.evaluate(binary_expr);
 
@@ -185,7 +186,7 @@ void test_interpreter_evaluates_nested_binary_exprs() {
         std::move(binary_expr_multiply)
     );
 
-    rune::Interpreter interpreter;
+    rune::Interpreter interpreter(std::cout);
 
     int value = interpreter.evaluate(binary_expr_plus);
 
@@ -216,7 +217,7 @@ void test_interpreter_throws_divide_by_zero_error() {
         std::move(right)
     );
 
-    rune::Interpreter interpreter;
+    rune::Interpreter interpreter(std::cout);
 
     bool threw = false;
 
@@ -237,7 +238,7 @@ void test_interpreter_throws_divide_by_zero_error() {
 }
 
 void test_defined_variable() {
-    rune::Interpreter interpreter;
+    rune::Interpreter interpreter(std::cout);
 
     interpreter.define("x", 42);
 
@@ -259,7 +260,7 @@ void test_defined_variable() {
 }
 
 void test_defined_variable_inside_binary_expr() {
-    rune::Interpreter interpreter;
+    rune::Interpreter interpreter(std::cout);
 
     interpreter.define("x", 10);
 
@@ -298,7 +299,7 @@ void test_defined_variable_inside_binary_expr() {
 }
 
 void test_undefined_variable_throws_error() {
-    rune::Interpreter interpreter;
+    rune::Interpreter interpreter(std::cout);
 
     const rune::Token name = rune::Token{
         rune::TokenKind::TOK_IDENTIFIER,
@@ -329,7 +330,7 @@ void test_undefined_variable_throws_error() {
 
 // Statement execution tests
 void test_interpreter_executes_let_statement() {
-    rune::Interpreter interpreter;
+    rune::Interpreter interpreter(std::cout);
 
     std::unique_ptr<rune::Expr> initializer =
         std::make_unique<rune::IntegerExpr>(42);
@@ -355,6 +356,23 @@ void test_interpreter_executes_let_statement() {
         << "test_interpreter_executes_let_statement PASSED\n";
 }
 
+void test_interpreter_executes_print_statement() {
+    std::ostringstream output;
+    rune::Interpreter interpreter(output);
+
+    std::unique_ptr<rune::Expr> expression =
+        std::make_unique<rune::IntegerExpr>(42);
+
+    const rune::PrintStmt print_stmt(std::move(expression));
+
+    interpreter.execute(print_stmt);
+
+    assert(output.str() == "42\n");
+
+    std::cout
+        << "test_interpreter_executes_print_statement PASSED\n";
+}
+
 void run_tests() {
     test_interpreter_evaluates_integer_expression();
     test_interpreter_plus_op();
@@ -367,4 +385,5 @@ void run_tests() {
     test_undefined_variable_throws_error();
     test_defined_variable_inside_binary_expr();
     test_interpreter_executes_let_statement();
+    test_interpreter_executes_print_statement();
 } 

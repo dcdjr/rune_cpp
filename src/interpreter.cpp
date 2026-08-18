@@ -55,11 +55,24 @@ void Interpreter::execute(const Stmt& stmt) {
         return;
     }
 
+    if (auto *print_stmt =
+            dynamic_cast<const PrintStmt*>(&stmt)) {
+        int value = evaluate(print_stmt->expression());
+        output_ << value << "\n";
+        return;
+    }
+
     throw std::runtime_error("Error: Unsupported statement type");
 }
 
 void Interpreter::define(const std::string& name, int value) {
     environment_[name] = value;
+}
+
+void Interpreter::interpret(const std::vector<std::unique_ptr<Stmt>>& statements) {
+    for (const auto& stmt : statements) {
+        execute(*stmt);
+    }
 }
 
 } // namespace rune

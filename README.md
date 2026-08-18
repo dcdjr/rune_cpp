@@ -94,17 +94,17 @@ program output
 The current grammar is documented in `GRAMMAR.md`.
 
 ```text
-program         -> statement* EOF
+program             -> statement* EOF
 
-statement       -> let_statement | print_statement
-let_statement   -> "let" IDENTIFIER "=" expression ";"
-print_statement -> "print" expression ";"
+statement           -> let_statement | print_statement | reassign_statement
+let_statement       -> "let" IDENTIFIER "=" expression ";"
+print_statement     -> "print" expression ";"
+reassign_statement  -> IDENTIFIER "=" expression ";"
 
-expression      -> term (("+" | "-") term)*
-term            -> factor (("*" | "/") factor)*
-factor          -> INT | IDENTIFIER | "(" expression ")"
+expression          -> term (("+" | "-") term)*
+term                -> factor (("*" | "/") factor)*
+factor              -> INT | IDENTIFIER | "(" expression ")"
 ```
-
 ## Requirements
 
 - A C++20-compatible compiler
@@ -177,7 +177,7 @@ GRAMMAR.md         Current rune grammar
 - [x] Whole-program parsing
 - [x] Tree-walk interpreter
 - [x] Runtime variable environment
-- [ ] Variable reassignment
+- [x] Variable reassignment
 - [ ] Comparison and boolean operators
 - [ ] Control flow
 - [ ] Functions

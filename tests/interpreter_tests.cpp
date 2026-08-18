@@ -373,6 +373,82 @@ void test_interpreter_executes_print_statement() {
         << "test_interpreter_executes_print_statement PASSED\n";
 }
 
+void test_interpreter_executes_reassignment_statement() {
+    std::ostringstream output;
+    rune::Interpreter interpreter(output);
+
+    std::unique_ptr<rune::Expr> initializer =
+        std::make_unique<rune::IntegerExpr>(42);
+
+    const rune::Token name = rune::Token{
+        rune::TokenKind::TOK_IDENTIFIER,
+        "x",
+        1,
+        5
+    };
+
+    const rune::LetStmt let_stmt(name, std::move(initializer));
+
+    // executes "let x = 42;"
+    interpreter.execute(let_stmt);
+
+    rune::VariableExpr pre_reassign_var(name);
+
+    int pre_reassign_value = interpreter.evaluate(pre_reassign_var);
+
+    assert(pre_reassign_value == 42);
+
+    std::unique_ptr<rune::Expr> reinitializer =
+        std::make_unique<rune::IntegerExpr>(36);
+
+    const rune::ReassignStmt reassign_stmt(name, std::move(reinitializer));
+
+    // executes "x = 36;"
+    interpreter.execute(reassign_stmt);
+
+    rune::VariableExpr post_reassign_var(name);
+
+    int post_reassign_value = interpreter.evaluate(post_reassign_var);
+
+    assert(post_reassign_value == 36);
+
+    std::cout
+        << "test_interpreter_executes_reassignment_statement PASSED\n";
+}
+
+void test_reassignment_of_nonexistent_variable_throws_error() {
+    rune::Interpreter interpreter(std::cout);
+
+    const rune::Token name = rune::Token{
+        rune::TokenKind::TOK_IDENTIFIER,
+        "x",
+        1,
+        5
+    };
+
+    std::unique_ptr<rune::Expr> reinitializer =
+        std::make_unique<rune::IntegerExpr>(21);
+
+    const rune::ReassignStmt reassign_stmt(name, std::move(reinitializer));
+
+    bool threw = false;
+
+    try {
+        interpreter.execute(reassign_stmt);
+    } catch (const std::runtime_error& e) {
+        threw = true;
+        assert(
+            std::string(e.what()) ==
+            "Error: Reassignment of nonexistent variable"
+        );
+    }
+
+    assert(threw);
+
+    std::cout
+        << "test_reassignment_of_nonexistent_variable_throws_error PASSED\n";
+}
+
 void run_tests() {
     test_interpreter_evaluates_integer_expression();
     test_interpreter_plus_op();
@@ -386,4 +462,6 @@ void run_tests() {
     test_defined_variable_inside_binary_expr();
     test_interpreter_executes_let_statement();
     test_interpreter_executes_print_statement();
+    test_interpreter_executes_reassignment_statement();
+    test_reassignment_of_nonexistent_variable_throws_error();
 } 

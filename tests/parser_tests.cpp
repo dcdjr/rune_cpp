@@ -351,6 +351,33 @@ void test_parse_print_statement() {
         << "test_parse_print_statement PASSED\n";
 }
 
+void test_parse_reassign_statement() {
+    const std::string source = "age = 2;";
+
+    std::vector<rune::Token> tokens;
+    rune::Lexer lexer(source);
+    lexer.lex_all(tokens);
+
+    rune::Parser parser(tokens);
+
+    auto reassign_stmt = parser.parse_reassign_statement();
+
+    auto *root =
+        dynamic_cast<rune::ReassignStmt*>(reassign_stmt.get());
+
+    assert(root != nullptr);
+    assert(root->name().lexeme == "age");
+    
+    auto *reinitializer =
+        dynamic_cast<const rune::IntegerExpr*>(&root->reinitializer());
+
+    assert(reinitializer != nullptr);
+    assert(reinitializer->value() == 2);
+
+    std::cout
+        << "test_parse_reassign_statement PASSED\n";
+}
+
 void test_malformed_declaration() {
     const std::string source = "let age 123;";
 
@@ -487,6 +514,7 @@ void run_tests() {
     /* Statement tests */
     test_parse_let_statement();
     test_parse_print_statement();
+    test_parse_reassign_statement();
     test_malformed_declaration();
     test_parse_statement_dispatch_to_let();
     test_parse_statement_dispatch_to_print();

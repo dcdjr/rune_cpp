@@ -35,7 +35,15 @@ INTERPRETER_TEST_SRC = src/ast.cpp                 \
 
 INTERPRETER_TEST_OUT = $(BUILD_DIR)runei_interpreter_tests
 
-TEST_OUT = $(LEXER_TEST_OUT) $(PARSER_TEST_OUT) $(INTERPRETER_TEST_OUT)
+RUNE_TEST_SRC = src/lexer.cpp                      \
+				src/parser.cpp                     \
+				src/interpreter.cpp                \
+				src/ast.cpp                        \
+				tests/rune_tests.cpp
+
+RUNE_TEST_OUT = $(BUILD_DIR)runei_rune_tests
+
+TEST_OUT = $(LEXER_TEST_OUT) $(PARSER_TEST_OUT) $(INTERPRETER_TEST_OUT) $(RUNE_TEST_OUT)
 
 all: $(PROD_SRC)
 	@mkdir -p $(BUILD_DIR)
@@ -56,7 +64,12 @@ interpreter_tests: $(INTERPRETER_TEST_SRC)
 	@$(CXX) $(CXXFLAGS) $(INTERPRETER_TEST_SRC) -o $(INTERPRETER_TEST_OUT)
 	./$(INTERPRETER_TEST_OUT)
 
-test: parser_tests lexer_tests interpreter_tests
+rune_tests: $(RUNE_TEST_SRC)
+	@mkdir -p $(BUILD_DIR)
+	@$(CXX) $(CXXFLAGS) $(RUNE_TEST_SRC) -o $(RUNE_TEST_OUT)
+	./$(RUNE_TEST_OUT)
+
+test: parser_tests lexer_tests interpreter_tests rune_tests
 
 clean:
 	rm -f $(PROD_OUT) $(TEST_OUT)

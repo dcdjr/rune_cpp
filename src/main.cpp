@@ -9,7 +9,7 @@
 
 int main(int argc, char **argv) {
     if (argc != 2) {
-        std::cerr << "Usage: ./runec <input_file>" << '\n'; 
+        std::cerr << "Usage: ./runei <input_file>" << '\n'; 
         return 1;
     }
 

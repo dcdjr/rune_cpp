@@ -10,9 +10,9 @@ long term project.
 
 ## Current status
 
-`rune` currently has a working lexer and recursive-descent parser capable
-of parsing complete programs containing variable declarations and print
-statements.
+`rune` currently has a working lexer, recursive-descent parser, AST, and tree-walk interpreter.
+
+Programs can contain variable declarations, arithmetic expressions, and print statements. Source files are lexed into tokens, parsed into an AST, and then executed by the interpreter.
 
 The lexer currently supports:
 
@@ -37,29 +37,74 @@ The parser currently supports:
 - print statements
 - Multi-statement program parsing
 
-The lexer is covered by automated tests and is compiled with AddressSanitizer and UndefinedBehaviorSanitizer enabled.
+The interpreter currently supports:
+
+Integer expression evaluation
+Arithmetic with +, -, *, and /
+Variable definitions and lookup
+let statement execution
+print statement execution
+Runtime errors for undefined variables and division by zero
+
+The lexer, parser, and interpreter are covered by automated tests. Builds use AddressSanitizer and UndefinedBehaviorSanitizer during development, and the test suite runs automatically through GitHub Actions.
 
 ## Example
 
-Input source code:
+Example `rune` program:
 
 ```rune
-let age = 19;
-print age;
+let number1 = (5 + 3) * 2;
+let number2 = 80 / 20;
+
+let product = number1 * number2;
+
+print product;
 ```
 
-Token output:
+Running:
+
+```sh
+./build/runei examples/example1.rn
+```
+
+produces:
 
 ```text
-TOK_LET "let" at 1:1
-TOK_IDENTIFIER "age" at 1:5
-TOK_EQUAL "=" at 1:9
-TOK_INT "19" at 1:11
-TOK_SEMICOLON ";" at 1:13
-TOK_PRINT "print" at 2:1
-TOK_IDENTIFIER "age" at 2:7
-TOK_SEMICOLON ";" at 2:10
-TOK_EOF
+64
+```
+
+The program moves through the following pipeline:
+
+```text
+source code
+    ↓
+lexer
+    ↓
+tokens
+    ↓
+parser
+    ↓
+abstract syntax tree
+    ↓
+interpreter
+    ↓
+program output
+```
+
+## Grammar
+
+The current grammar is documented in `GRAMMAR.md`.
+
+```text
+program         -> statement* EOF
+
+statement       -> let_statement | print_statement
+let_statement   -> "let" IDENTIFIER "=" expression ";"
+print_statement -> "print" expression ";"
+
+expression      -> term (("+" | "-") term)*
+term            -> factor (("*" | "/") factor)*
+factor          -> INT | IDENTIFIER | "(" expression ")"
 ```
 
 ## Requirements
@@ -71,7 +116,7 @@ The project currently uses `g++`.
 
 ## Build & run
 
-Compile the `rune` executable:
+Compile the `runei` executable:
 
 ```sh
 make
@@ -80,13 +125,13 @@ make
 This creates:
 
 ```text
-build/runec
+build/runei
 ```
 
 Pass a `rune` source file to the executable:
 
 ```sh
-./build/runec path/to/program.rn
+./build/runei path/to/program.rn
 ```
 
 ## Testing
@@ -95,6 +140,14 @@ Build and run the test suite:
 
 ```sh
 make test
+```
+
+Individual test suites can also be run with:
+
+```sh
+make lexer_tests
+make parser_tests
+make interpreter_tests
 ```
 
 ## Cleaning
@@ -113,7 +166,7 @@ src/               Implementation
 examples/          Examples rune programs
 tests/             Automated tests  
 Makefile           Build and test configuration  
-GRAMMAR.md         Contains rune's chosen grammar
+GRAMMAR.md         Current rune grammar
 ```
 
 ## Roadmap
@@ -124,6 +177,10 @@ GRAMMAR.md         Contains rune's chosen grammar
 - [x] Variable declaration parsing
 - [x] Print statement parsing
 - [x] Whole-program parsing
-- [ ] Tree-walk interpreter
-- [ ] Runtime variable environment
-- [ ] Functions and control flow
+- [x] Tree-walk interpreter
+- [x] Runtime variable environment
+- [ ] Variable reassignment
+- [ ] Comparison and boolean operators
+- [ ] Control flow
+- [ ] Functions
+- [ ] Improved error reporting

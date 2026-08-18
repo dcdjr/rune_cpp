@@ -13,13 +13,13 @@ PROD_SRC = src/main.cpp                            \
 		   src/ast.cpp                             \
 		   src/file_utils.cpp
 
-PROD_OUT = $(BUILD_DIR)runec
+PROD_OUT = $(BUILD_DIR)runei
 
 LEXER_TEST_SRC = src/lexer.cpp                     \
 				 src/token.cpp                     \
 				 tests/lexer_tests.cpp
 
-LEXER_TEST_OUT = $(BUILD_DIR)runec_lexer_tests
+LEXER_TEST_OUT = $(BUILD_DIR)runei_lexer_tests
 
 PARSER_TEST_SRC = src/lexer.cpp                    \
 				  src/ast.cpp                      \
@@ -27,13 +27,13 @@ PARSER_TEST_SRC = src/lexer.cpp                    \
 				  src/parser.cpp                   \
 				  tests/parser_tests.cpp
 
-PARSER_TEST_OUT = $(BUILD_DIR)runec_parser_tests
+PARSER_TEST_OUT = $(BUILD_DIR)runei_parser_tests
 
 INTERPRETER_TEST_SRC = src/ast.cpp                 \
 					   src/interpreter.cpp         \
 					   tests/interpreter_tests.cpp 
 
-INTERPRETER_TEST_OUT = $(BUILD_DIR)runec_interpreter_tests
+INTERPRETER_TEST_OUT = $(BUILD_DIR)runei_interpreter_tests
 
 TEST_OUT = $(LEXER_TEST_OUT) $(PARSER_TEST_OUT) $(INTERPRETER_TEST_OUT)
 

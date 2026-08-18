@@ -1,5 +1,7 @@
 #include "rune/lexer.hpp"
 #include "rune/token.hpp"
+#include "rune/parser.hpp"
+#include "rune/interpreter.hpp"
 #include "rune/file_utils.hpp"
 #include <iostream>
 #include <vector>
@@ -26,7 +28,13 @@ int main(int argc, char **argv) {
     std::vector<rune::Token> tokens;
     lexer.lex_all(tokens);
 
-    print_all_tokens(tokens);
+    rune::Parser parser(tokens);
+
+    auto statements = parser.parse_program();
+
+    rune::Interpreter interpreter(std::cout);
+
+    interpreter.interpret(statements);
 
     return 0;
 }

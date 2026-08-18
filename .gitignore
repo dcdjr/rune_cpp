@@ -1,7 +1,4 @@
-runec
-runec_tests
-runec_parser_tests
-runec_lexer_tests
+build/
 compile_flags.txt
 rd.txt
 practice/

@@ -143,12 +143,27 @@ std::unique_ptr<Stmt> Parser::parse_print_statement() {
     );
 }
 
+std::unique_ptr<Stmt> Parser::parse_reassign_statement() {
+    Token name = consume(TokenKind::TOK_IDENTIFIER, "Expected identifier");
+    consume(TokenKind::TOK_EQUAL, "Expected \"=\"");
+    std::unique_ptr<Expr> initializer = parse_expression();
+    consume(TokenKind::TOK_SEMICOLON, "Expected \";\"");
+
+    return std::make_unique<ReassignStmt>(
+        name,
+        std::move(initializer)
+    );
+}
+
 std::unique_ptr<Stmt> Parser::parse_statement() {
     if (check(TokenKind::TOK_LET))
         return parse_let_statement();
 
     if (check(TokenKind::TOK_PRINT))
         return parse_print_statement();
+
+    if (check(TokenKind::TOK_IDENTIFIER))
+        return parse_reassign_statement();
 
     throw std::runtime_error("Error: Expected statement");
 }

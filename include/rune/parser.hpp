@@ -36,6 +36,7 @@ public:
     // Statement parsing
     std::unique_ptr<Stmt> parse_let_statement();
     std::unique_ptr<Stmt> parse_print_statement();
+    std::unique_ptr<Stmt> parse_reassign_statement();
     std::unique_ptr<Stmt> parse_statement();
 
     // Program parsing

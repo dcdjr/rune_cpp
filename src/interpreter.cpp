@@ -62,6 +62,18 @@ void Interpreter::execute(const Stmt& stmt) {
         return;
     }
 
+    if (auto *reassign_stmt =
+            dynamic_cast<const ReassignStmt*>(&stmt)) {
+        int reassignment_value = evaluate(reassign_stmt->reinitializer());
+        std::string name(reassign_stmt->name().lexeme);
+
+        auto it = environment_.find(name);
+        if (it == environment_.end())
+            throw std::runtime_error("Error: Reassignment of nonexistent variable");
+        define(name, reassignment_value);         
+        return;
+    }
+
     throw std::runtime_error("Error: Unsupported statement type");
 }
 
